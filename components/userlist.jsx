@@ -16,6 +16,7 @@ const styles = {
 function UserList() {
 
     const { profiles } = useContext(FantsyContext);
+    // console.log(profiles, "PROFILES IDS HERE")
 
     return (
         <div className="h-full w-11/12 pt-40 mx-auto">

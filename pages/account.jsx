@@ -7,10 +7,11 @@ import starterImg from '../images/profile-starter.png'
 import { AuthContext } from "../src/hook/auth"
 import { toast } from "react-toastify"
 import { AiOutlineUpload } from 'react-icons/ai'
+import { FantsyContext } from '../src/hook/FantsyContext'
 
 
 const styles = {
-    imageUploadBtn: "cursor-pointer hover: block w-full text-sm mx-10 text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-violet-50 file:text-violet-700 hover:file:bg-violet-100"
+    imageUploadBtn: "cursor-pointer block w-full text-sm mx-10 text-slate-500 file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-fantsy-blue-50 file:text-fantsy-blue-700 hover:file:bg-fantsy-blue-100"
 }
 
 const WorkerAccountDetails = () => {
@@ -18,6 +19,8 @@ const WorkerAccountDetails = () => {
     // GET LOGGED-IN-USER ID
     const { user } = useContext(AuthContext)
     console.log(user, "USER READY FOR PROFILE")
+    const { currentProfile } = useContext(FantsyContext)    
+    // console.log(currentProfile.id, "UUUUUUUUUU")
 
     // GET FILE & URL FROM STORAGE
     const [file, setFile] = useState(null)
@@ -71,7 +74,8 @@ const WorkerAccountDetails = () => {
     //UPLOAD USER IMAGE TO STORAGE AND RETURN DOWNLOADURL FOR PROFILE
     async function handleUpload(e) {
         e.preventDefault();
-        const path = `/images/${file.name}`;
+        const userId = user.uid
+        const path = `/images/${userId}/${file.name}`;
         const ref = storage.ref(path);
         await ref.put(file);
         const url = await ref.getDownloadURL();
@@ -80,7 +84,7 @@ const WorkerAccountDetails = () => {
     }
 
     return (
-        <div className="p-4 w-full justify-center items-center">
+        <div className="p-4 w-full py-40 justify-center items-center">
             <div className="p-4 flex items-center justify-center h-screen">
                 <div className="p-4 sm:p-10 w-screen sm:w-1/2 rounded-lg bg-white shadow-lg flex items-center justify-center">
                     <div className="h-full w-3/4">
@@ -96,7 +100,7 @@ const WorkerAccountDetails = () => {
                                 className="aspect-square mx-auto rounded-full border-4 border-shade-50"
                             />
                             <input type="file" className={styles.imageUploadBtn} onChange={handleChange} />
-                            <button className="py-2 px-4 text-white bg-fantsy-orange-400 rounded-full" disabled={!file}><AiOutlineUpload size={20} /></button>
+                            <button className="py-2 px-4 flex items-center text-white bg-fantsy-orange-400 rounded-full" disabled={!file}><AiOutlineUpload size={20} className="mr-2" />Hochladen</button>
                         </form>
                         <div className="my-5">
                             <label className="flex" htmlFor="username">Username</label>
@@ -118,9 +122,17 @@ const WorkerAccountDetails = () => {
                                 <option>Divers</option>
                             </select>
                         </div>
+                        {/* <div className="my-5">
+                            <label className="flex" htmlFor="lastname">Nachname</label>
+                            <input className="w-full bg-shade-50" type="text" id="lastName" name="lastname" required onChange={(e) => setLastname(e.target.value)} value={lastname} />
+                        </div>
                         <div className="my-5">
-                            <label className="flex" htmlFor="workerType">Möchtest du ein Fantsy Profil anbieten?</label>
-                            <input className="w-full bg-shade-50" type="checkbox" id="workerYes" name="workerType" onChange={(e) => setWorkerType(e.target.checked)} />
+                            <label className="flex" htmlFor="lastname">Nachname</label>
+                            <input className="w-full bg-shade-50" type="text" id="lastName" name="lastname" required onChange={(e) => setLastname(e.target.value)} value={lastname} />
+                        </div> */}
+                        <div className="my-5 flex">
+                            <input className="bg-shade-50 mr-2" type="checkbox" id="workerYes" name="workerType" onChange={(e) => setWorkerType(e.target.checked)} />
+                            <label className="flex" htmlFor="workerType">Ich möchte mich und meinen Content in einem Fantsy-Profil anbieten.</label>
                         </div>
                         <button
                             className="mt-5 bg-fantsy-green-400 rounded-lg p-2 w-1/3 self-center text-white hover:bg-fantsy-green-500 float-left font-bold"
