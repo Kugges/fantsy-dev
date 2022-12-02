@@ -106,7 +106,7 @@ const Navbar = () => {
                         {user ? <></> : <Link href="/register"><span className="cursor-pointer hover:text-white">Register</span></Link>}
                     </li>
                     <li className="p-4">
-                        <p>v0.1.9</p>
+                        <p>v0.1.9.1</p>
                     </li>
                 </ul>
 
@@ -182,7 +182,7 @@ const Navbar = () => {
                             </p>
                         </li>
                         <li className="p-4">
-                            <p>v0.1.9</p>
+                            <p>v0.1.9.1</p>
                         </li>
                     </ul>
                 </div>

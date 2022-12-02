@@ -5,7 +5,7 @@ export const verifyIdToken = (token) => {
     if (!admin.apps.length) {
         admin.initializeApp({
             credential: admin.credential.cert(serviceAccount),
-            databaseURL: "https://fantsy-net.firebaseio.com",
+            databaseURL: "https://fantsy-net-default-rtdb.europe-west1.firebasedatabase.app",
         })
     }
 

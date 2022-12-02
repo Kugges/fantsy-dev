@@ -62,7 +62,7 @@ const FantsyProvider = ({ children }) => {
         const getCurrentProfile = async () => {
             const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('email', '==', currentUser)))
 
-            setCurrentProfile(querySnapshot.docs.map(doc => {
+            setCurrentProfile(querySnapshot?.docs.map(doc => {
                 console.log(querySnapshot, "PROFILE DOC")
                 return {
                     id: doc.id,
@@ -74,8 +74,7 @@ const FantsyProvider = ({ children }) => {
                         bio: doc.data().bio
                     }
                 }
-            }))
-            console.log(querySnapshot?.id, "PROFILE DOC")            
+            }))          
         }
         getCurrentProfile()
         }

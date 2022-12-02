@@ -58,7 +58,7 @@ const WorkerAccountDetails = () => {
         }).then(function () {
             toast.success("Profil erstellt!");
             window.location.href = "/"
-            // window.location.href = `/userProfile/${profileAdded.id}` //TODO route User to own profile page after successfull profile
+            // window.location.href = `/profile/${profileAdded.id}` //TODO route User to own profile page after successfull profile
         }).catch(function (error) {
             const message = error.message;
             console.log(error.message);

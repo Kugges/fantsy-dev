@@ -30,7 +30,7 @@ const UserCard = ({ profile }) => {
 
   return (
     <div className={styles.userCard}>
-      <Link href={`/userProfile/${profile.id}`}>
+      <Link href={`/profile/${profile.id}`}>
         <Image
           src={profile.data.userProfileUrl}
           height={100}

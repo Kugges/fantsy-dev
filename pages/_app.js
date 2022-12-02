@@ -25,9 +25,9 @@ function MyApp({ Component, pageProps }) {
       <ToastContainer />
       <AuthProvider>
         <FantsyProvider>
-          <Navbar />
-          <>{isLoading ? <Loader/> : <Component {...pageProps} />}</>
-          <Footer />
+          <>{isLoading ? <Loader /> : <>
+            <Navbar /><Component {...pageProps} />
+            <Footer /></>}</>
         </FantsyProvider>
       </AuthProvider>
     </>
