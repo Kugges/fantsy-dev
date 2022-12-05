@@ -38,10 +38,10 @@ function UserList() {
                 </div>
             </div>
             <div className=" py-24 grid grid-cols-6">
-                <div className="col-span-1 mr-5">
+                <div className="col-span-1 mr-5 hidden sm:block">
                     <FilterBar />
                 </div>
-                <div className="col-span-5">
+                <div className="col-span-6 sm:col-span-5">
                     {/*Profiles List*/}
                     <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 text-center">
                         {/* {data.map((profile) => {

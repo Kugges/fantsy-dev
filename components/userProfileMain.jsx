@@ -8,7 +8,7 @@ import RatingBar from './ratingBar';
 
 const styles = {
     wrapper: "py-20 mx-auto grid gap-4",
-    profileBgContainer: "cursor-relative block w-full h-80 bg-fantsy-orange-500 overflow-hidden z-10",
+    profileBgContainer: "cursor-relative block w-full sm:h-80 bg-fantsy-orange-500 overflow-hidden z-10",
     profileDetails: "w-5/6 sm:w-2/3 h-screen grid grid-cols-1 sm:grid-cols-3 gap-0 sm:gap-4 z-20 mx-auto",
     profileCard: "col-span-1 bg-fantsy-orange-200 rounded-xl p-8",
     profileContent: "col-span-1 sm:col-span-2 rounded-xl grid grid-rows-4 gap-4",
@@ -17,6 +17,7 @@ const styles = {
 }
 
 const UserProfileMain = ({ profile }) => {
+
     // console.log(profile, "YEAH MAN")
     return (
         <div className={styles.wrapper}>
@@ -105,11 +106,7 @@ const UserProfileMain = ({ profile }) => {
                     </div>
                     <div className="p-4">
                         <h1 className="text-4xl">Über mich</h1>
-                        <p className="mt-4 text-left">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, in quod! Nemo natus consequatur fugiat nihil rerum doloribus temporibus magni et quidem, nulla quae saepe, aspernatur unde debitis, ullam officia.<br></br><br></br>
-
-                            Corporis, in quod! Nemo natus consequatur fugiat nihil rerum doloribus. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-
+                        <p className="mt-4 text-left">{profile.data?.bio}
                         </p>
 
                     </div>

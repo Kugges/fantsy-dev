@@ -40,7 +40,7 @@ const UserCard = ({ profile }) => {
         />
       </Link>
       <div className="pb-4">
-        <p className="pt-4 text-xl sm:text-2xl lg:text-3xl">{profile.data.displayName}</p>
+        <p className="pt-4 text-md sm:text-xl lg:text-2xl">{profile.data.displayName}</p>
         {/* SHOW TIMESTAMP */}
         {/* <p>{new Date(profile.data.postedOn).toLocaleString("de-DE", {
                   day: "numeric",

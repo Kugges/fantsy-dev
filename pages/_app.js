@@ -8,6 +8,8 @@ import "react-toastify/dist/ReactToastify.css"
 import { useRouter } from 'next/router'
 import { useEffect, useState } from "react"
 import Loader from "../components/loader"
+import ChatWindow from "./chat/[slug]"
+import Head from "next/head"
 
 function MyApp({ Component, pageProps }) {
 
@@ -19,15 +21,29 @@ function MyApp({ Component, pageProps }) {
     router.isReady && setIsLoading(false)
   }, [])
 
+
+
   return (
 
     <>
+    <Head>
+      <title>fantsy.net</title>
+      <meta name="description" content="Social Media for Sexworking" />
+      <link rel="icon" href="/favicon.ico" />
+    </Head>
       <ToastContainer />
       <AuthProvider>
         <FantsyProvider>
-          <>{isLoading ? <Loader /> : <>
-            <Navbar /><Component {...pageProps} />
-            <Footer /></>}</>
+          <>{isLoading ?
+            <Loader />
+            :
+            <>
+              <Navbar />
+              <Component {...pageProps} />
+              <ChatWindow />
+              <Footer />
+            </>
+          }</>
         </FantsyProvider>
       </AuthProvider>
     </>

@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useContext } from "react"
-import { collection, getDocs, getDoc, doc, where, query, setDoc } from "firebase/firestore"
+import { collection, getDocs, getDoc, doc, where, query, } from "firebase/firestore"
 import { fireDb } from "../../firebaseClient"
 import { AuthContext } from "./auth"
 import firebase from "firebase/compat/app";
@@ -11,38 +11,39 @@ const FantsyProvider = ({ children }) => {
     const [users, setUsers] = useState([])
     const [currentLoggedUser, setCurrentUser] = useState([])
     const [profiles, setProfiles] = useState([])
-    const [currentProfile, setCurrentProfile] = useState([])
+    const [currentProfile, setCurrentProfile] = useState([])   
+
     const { user } = useContext(AuthContext)
-    // console.log(user?.uid, "UID HERE")
 
-    // GET CURRENT USER
-    useEffect(() => {
-        const currentUser = user?.uid
-        if (user) {
-            const getCurrentUser = async () => {
-                const documentSnapshot = await getDocs(query(collection(fireDb, "users"), where('id', '==', currentUser)))
-                // console.log(documentSnapshot, "WUPPINGER")
-                setCurrentUser(documentSnapshot.docs.map(doc => {
-                    return {
-                        id: doc.id,
-                        data: {
-                            email: doc.data().email,
-                            hasSubscription: doc.data().hasSubscription,
-                            profileId: doc.data().profileId
-                        }
-                    }
-                }))
-            }
-            getCurrentUser()
-        }
-    }, [])
+    // // GET CURRENT USER DOCUMENT
+    // useEffect(() => {
+    //     const currentUser = user?.uid
+    //     if (user) {
+    //         const getCurrentUser = async () => {
+    //             const docSnap = await getDocs(query(collection(fireDb, "users"), where('id', '==', currentUser)))
+    //             // const docSnap = await getDoc(doc(fireDb, "users", currentUser))
+    //             // console.log(docSnap, "WUPPINGER")
+    //             setCurrentUser(docSnap.docs.map(doc => {
+    //                 return {
+    //                     id: doc.id,
+    //                     data: {
+    //                         email: doc.data().email,
+    //                         hasSubscription: doc.data().hasSubscription,
+    //                         profileId: doc.data().profileId
+    //                     }
+    //                 }
+    //             })[0])
+    //         }
+    //         getCurrentUser()
+    //     }
+    // }, [])
 
-    // GET ALL USERS
+    // GET ALL USER DOCUMENTS
     useEffect(() => {
         const getUsers = async () => {
             const querySnapshot = await getDocs(collection(fireDb, "users"))
             // console.log(querySnapshot, "WUPPINGER")
-            setUsers(querySnapshot.docs.map(doc => {
+            setUsers(querySnapshot?.docs.map(doc => {
                 return {
                     id: doc.id,
                     data: {
@@ -54,38 +55,36 @@ const FantsyProvider = ({ children }) => {
         getUsers()
     }, [])
 
-    // GET CURRENT PROFILE
+    // GET CURRENT PROFILE DOCUMENT
     useEffect(() => {
-        
-        const currentUser = user?.email
-        if (user) {            
-        const getCurrentProfile = async () => {
-            const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('email', '==', currentUser)))
-
-            setCurrentProfile(querySnapshot?.docs.map(doc => {
-                console.log(querySnapshot, "PROFILE DOC")
-                return {
-                    id: doc.id,
-                    data: {
-                        displayName: doc.data().displayName,
-                        userProfileUrl: doc.data().userProfileUrl,
-                        userGender: doc.data().userGender,
-                        likesCount: doc.data().likesCount,
-                        bio: doc.data().bio
+        const currentUser = user?.uid
+        if (user) {
+            const getCurrentProfile = async () => {
+                const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('id', '==', currentUser)))
+                // const querySnapshot = await getDoc(doc(fireDb, "profiles", currentUser))
+                setCurrentProfile(querySnapshot?.docs.map(doc => {
+                    return {
+                        id: doc.id,
+                        data: {
+                            displayName: doc.data().displayName,
+                            userProfileUrl: doc.data().userProfileUrl,
+                            userGender: doc.data().userGender,
+                            likesCount: doc.data().likesCount,
+                            bio: doc.data().bio
+                        }
                     }
-                }
-            }))          
+                })[0])
+            }
+            getCurrentProfile()
         }
-        getCurrentProfile()
-        }
-    }, [])
+    }, [currentProfile])
 
-    // GET ALL WORKER PROFILES
+    // GET ALL WORKER PROFILE DOCUMENTS
     useEffect(() => {
         const getProfiles = async () => {
             const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('workerProfile', '==', true)))
             // console.log(querySnapshot, "CHECK OUT")
-            setProfiles(querySnapshot.docs.map(doc => {
+            setProfiles(querySnapshot?.docs.map(doc => {
                 return {
                     id: doc.id,
                     data: {

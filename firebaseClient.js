@@ -1,5 +1,6 @@
 import firebase from "firebase/compat/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth";
 
 import "firebase/analytics";
 import "firebase/compat/storage";
@@ -31,5 +32,6 @@ if (!firebase.apps.length) {
 const app = firebase.initializeApp(FIREBASE_CONFIG);
 const fireDb = getFirestore(app);
 const storage = firebase.storage();
+const auth = getAuth();
 
-export { app, fireDb, storage }
+export { app, fireDb, storage, auth }

@@ -37,10 +37,10 @@ const WorkerAccountDetails = () => {
     //     setWorkerType(!workertype);
     // }
 
-
     const addProfileToFirebase = async event => {
         event.preventDefault()
-        const profileAdded = await addDoc(collection(fireDb, "profiles"), {
+        // const profileAdded = await addDoc(collection(fireDb, "profiles"), {
+        await setDoc(doc(fireDb, "profiles", user.uid), {
             displayName: username,
             userPrename: prename,
             userLastname: lastname,
@@ -54,8 +54,10 @@ const WorkerAccountDetails = () => {
         })
         // console.log(profileAdded.id, "is this the profiles ID?")
         await updateDoc(doc(fireDb, "users", user.uid), {
-            profileId: profileAdded.id
-        }).then(function () {
+            profileId: profileAdded.id,
+            photoURL: url
+        })
+        .then(function () {
             toast.success("Profil erstellt!");
             window.location.href = "/"
             // window.location.href = `/profile/${profileAdded.id}` //TODO route User to own profile page after successfull profile

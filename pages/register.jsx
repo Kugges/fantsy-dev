@@ -23,8 +23,8 @@ export default function Register() {
         const userData = {
           id: user.uid,
           email: user.email,
-          hasSubscription: false,
-          profileId: "No profile created yet."
+          hasSubscription: false
+          // profileId: "No profile created yet."
         }
         setDoc(doc(fireDb, "users", user.uid), userData);
         console.log(userData, "USER INCOMING");
