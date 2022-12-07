@@ -8,7 +8,7 @@ import "react-toastify/dist/ReactToastify.css"
 import { useRouter } from 'next/router'
 import { useEffect, useState } from "react"
 import Loader from "../components/loader"
-import ChatWindow from "./chat/[slug]"
+import Chat from "./chat/chat"
 import Head from "next/head"
 
 function MyApp({ Component, pageProps }) {
@@ -38,9 +38,9 @@ function MyApp({ Component, pageProps }) {
             <Loader />
             :
             <>
-              <Navbar />
+              <Navbar />              
               <Component {...pageProps} />
-              <ChatWindow />
+              <Chat />
               <Footer />
             </>
           }</>

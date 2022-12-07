@@ -19,7 +19,7 @@ function UserList() {
     // console.log(profiles, "PROFILES IDS HERE")
 
     return (
-        <div className="h-full w-11/12 pt-40 mx-auto">
+        <div className="h-full w-10/12 pt-40 ml-10">
             {/*Overlay*/}
             <div className={styles.landingContainer}>
                 <div>

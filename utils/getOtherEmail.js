@@ -1,5 +1,7 @@
-const getOtherEmail = ( users, currentUser) => {
-    return users?.filter(user => user !== currentUser.email)[0];
+const getOtherEmail = (users, currentUser) => {
+    const otherUser = users?.filter(user => user !== currentUser.email)[0];
+
+    return otherUser;
 
 }
 

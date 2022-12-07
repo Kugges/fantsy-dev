@@ -1,14 +1,12 @@
 import React, { useState, useContext } from 'react'
 import { AiOutlineMenu, AiOutlineClose, AiOutlineUser } from 'react-icons/ai'
-// import { useAuth } from "../auth"
 import { AuthContext } from "../src/hook/auth"
-import { FantsyContext } from "../src/hook/FantsyContext"
 import Link from 'next/link'
 
 import firebase from "firebase/compat/app"
 
 import Image from 'next/image'
-import logo from '../images/fantsy-logo-150x50.png'
+import logo from '../images/peach-logo.png'
 import { collection } from 'firebase/firestore'
 import { fireDb } from '../firebaseClient'
 import { useCollection } from 'react-firebase-hooks/firestore'
@@ -17,8 +15,8 @@ const styles = {
 
     loginbutton: "bg-shade-800 py-2 px-5 cursor-pointer text-white font-bold rounded-lg hover:bg-fantsy-blue-600",
     logoutbutton: "py-2 px-5 cursor-pointer hover:text-white",
-    dropdownButton: "dropdown-toggle flex items-center py-2 px-5 -mt-2 cursor-pointer hover:text-white",
-    dropdownMenu: "dropdown-menu sm:absolute py-2 min-w-max bg-fantsy-orange-500 text-base z-20 list-none text-center rounded-none shadow-none ease-in duration-100 sm:rounded-lg sm:shadow-lg",
+    dropdownButton: "dropdown-toggle flex items-center px-5 cursor-pointer hover:text-white",
+    dropdownMenu: "dropdown-menu sm:absolute py-2 min-w-max bg-fantsy-orange-500 text-base z-50 list-none text-center rounded-none shadow-none ease-in duration-100 sm:rounded-lg sm:shadow-lg",
     menuLi: "px-10 py-2 hover:text-white text-sm"
 }
 
@@ -129,24 +127,23 @@ const Navbar = () => {
     }
 
     return (
-        <div className="fixed left-0 h-30 w-full z-50 ease-in duration-300 bg-fantsy-orange-500">
-            <div className="max-w-[1240px] m-auto flex justify-between items-center p-4 text-black">
-                <a href="/">
+        <div className="fixed left-0 h-16 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
+        <p className="absolute z-50">v0.2.2</p>
+            <div className="max-w-[1240px] m-auto flex justify-between items-center text-black">
+                <Link href="/">
                     <Image
                         src={logo}
                         alt="fantsy logo"
-                        width="150px"
-                        height="50px"
+                        width={60}
+                        height={60}
                         placeholder="empty"
                         priority="eager"
                     />
-                </a>
-                <ul className="hidden sm:flex">
+                </Link>
+                {/* ----------------DESKTOP MENU---------------- */}
+                <ul className="hidden sm:flex sm:items-center">
                     <li className="p-4 hover:text-white">
                         <Link href="/">Fantsys</Link>
-                    </li>
-                    <li className="p-4 hover:text-white">
-
                     </li>
                     <li className="p-4">
                         {user ? <>
@@ -163,17 +160,14 @@ const Navbar = () => {
                     <li className="p-4">
                         {user ? <></> : <Link href="/register"><span className="cursor-pointer hover:text-white">Register</span></Link>}
                     </li>
-                    <li className="p-4">
-                        <p>v0.2.0</p>
-                    </li>
                 </ul>
 
-                {/* Mobile Button */}
+                {/* ----------------MOBILE DROPDOWN BUTTON---------------- */}
                 <div onClick={handleNav} className="block sm:hidden z-10 cursor-pointer">
                     {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
                 </div>
 
-                {/* Mobile Menu */}
+                {/* ----------------MOBILE MENU---------------- */}
                 <div
                     className={
                         nav
@@ -204,9 +198,6 @@ const Navbar = () => {
                             <p>
                                 {user ? <></> : <a href="/register"><span className="cursor-pointer hover:text-white">Register</span></a>}
                             </p>
-                        </li>
-                        <li className="p-4">
-                            <p>v0.2.0</p>
                         </li>
                     </ul>
                 </div>

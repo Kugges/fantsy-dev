@@ -3,6 +3,7 @@ import { collection, getDocs, getDoc, doc, where, query, } from "firebase/firest
 import { fireDb } from "../../firebaseClient"
 import { AuthContext } from "./auth"
 import firebase from "firebase/compat/app";
+import getOtherEmail from "../../utils/getOtherEmail";
 
 const FantsyContext = createContext()
 
@@ -13,7 +14,9 @@ const FantsyProvider = ({ children }) => {
     const [profiles, setProfiles] = useState([])
     const [currentProfile, setCurrentProfile] = useState([])   
 
-    const { user } = useContext(AuthContext)
+    const { user } = useContext(AuthContext)        
+    // var variable = getOtherEmail(chat.users, user);
+    // console.log(variable, "VARIABEL")
 
     // // GET CURRENT USER DOCUMENT
     // useEffect(() => {
@@ -98,6 +101,24 @@ const FantsyProvider = ({ children }) => {
         }
         getProfiles()
     }, [])
+
+    // GET THE OTHER CHAT PARTICIPANT
+    // const [otherProfile, setOtherProfile] = useState([])
+    // useEffect(() => {
+    //     const getOtherProfile = async () => {
+    //         const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where("email", "==", otherUser)))
+    //         // console.log(querySnapshot, "WUPPINGER")
+    //         setOtherProfile(querySnapshot.docs?.map(doc => {
+    //             return {
+    //                 id: doc.id,
+    //                 data: {
+    //                     ...doc.data()
+    //                 }
+    //             }
+    //         })[0])
+    //     }
+    //     getOtherProfile()
+    // }, [])
 
 
     return (
