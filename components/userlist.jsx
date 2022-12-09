@@ -8,18 +8,26 @@ import FilterBar from './filterBar'
 import Image from 'next/image'
 import logo from '../images/fantsy-logo-300x150.png'
 
+import firebase from 'firebase/compat/app'
+import { AuthContext } from '../src/hook/auth'
+
+
 
 const styles = {
     landingContainer: "flex items-center justify-center",
 }
+
+
 
 function UserList() {
 
     const { profiles } = useContext(FantsyContext);
     // console.log(profiles, "PROFILES IDS HERE")
 
+    
+
     return (
-        <div className="h-full w-10/12 pt-40 ml-10">
+        <div className="h-full sm:w-2/3 pt-40 mx-auto">
             {/*Overlay*/}
             <div className={styles.landingContainer}>
                 <div>
@@ -38,12 +46,12 @@ function UserList() {
                 </div>
             </div>
             <div className=" py-24 grid grid-cols-6">
-                <div className="col-span-1 mr-5 hidden sm:block">
+                {/* <div className="col-span-1 mr-5 hidden sm:block">
                     <FilterBar />
-                </div>
-                <div className="col-span-6 sm:col-span-5">
+                </div> */}
+                <div className="col-span-6 sm:col-span-6">
                     {/*Profiles List*/}
-                    <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 text-center">
+                    <div className="p-2 grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 text-center">
                         {/* {data.map((profile) => {
                                 return <UserCard profile={profile} key={profile.id} />
                             })} */}

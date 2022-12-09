@@ -1,8 +1,9 @@
-import React from "react"
+import React, { useContext } from "react"
 import Head from 'next/head'
 
 import UserList from '../components/userlist'
-
+import { AuthContext } from "../src/hook/auth";
+import firebase from "firebase/compat/app"
 
 export default function Home(props) {
   return (

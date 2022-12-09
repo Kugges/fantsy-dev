@@ -10,6 +10,8 @@ import logo from '../images/peach-logo.png'
 import { collection } from 'firebase/firestore'
 import { fireDb } from '../firebaseClient'
 import { useCollection } from 'react-firebase-hooks/firestore'
+import Modal from "../components/modal"
+import Login from '../pages/login'
 
 const styles = {
 
@@ -30,6 +32,7 @@ const Navbar = () => {
         setNav(!nav);
     };
 
+    const [showModal, setShowModal] = useState(false)
 
 
     const { user } = useContext(AuthContext)
@@ -110,7 +113,7 @@ const Navbar = () => {
                         <Link href={`/profile/${profile.id}`}>Mein Profil</Link>
                     </li>
                     <li className={styles.menuLi} onClick={handleInnerNav}>
-                        <Link href="/account">Account</Link>
+                        <Link href="/join/account">Account</Link>
                     </li>
                     <li className={styles.menuLi}>
                         <button
@@ -127,82 +130,85 @@ const Navbar = () => {
     }
 
     return (
-        <div className="fixed left-0 h-16 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
-        <p className="absolute z-50">v0.2.2</p>
-            <div className="max-w-[1240px] m-auto flex justify-between items-center text-black">
-                <Link href="/">
-                    <Image
-                        src={logo}
-                        alt="fantsy logo"
-                        width={60}
-                        height={60}
-                        placeholder="empty"
-                        priority="eager"
-                    />
-                </Link>
-                {/* ----------------DESKTOP MENU---------------- */}
-                <ul className="hidden sm:flex sm:items-center">
-                    <li className="p-4 hover:text-white">
-                        <Link href="/">Fantsys</Link>
-                    </li>
-                    <li className="p-4">
-                        {user ? <>
-                            {profiles?.filter(profile => profile.email.includes(user.email))
-                                .map(profile => {
-                                    return <UserDropDown profile={profile} key={profile.id} />
-                                })}</>
-
-                            : <button onClick={async () => {
-                                window.location.href = "/login"
-                            }}><span className={styles.loginbutton}>Login</span></button>
-                        }
-                    </li>
-                    <li className="p-4">
-                        {user ? <></> : <Link href="/register"><span className="cursor-pointer hover:text-white">Register</span></Link>}
-                    </li>
-                </ul>
-
-                {/* ----------------MOBILE DROPDOWN BUTTON---------------- */}
-                <div onClick={handleNav} className="block sm:hidden z-10 cursor-pointer">
-                    {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
-                </div>
-
-                {/* ----------------MOBILE MENU---------------- */}
-                <div
-                    className={
-                        nav
-                            ? "sm:hidden absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center w-full h-screen ease-in duration-300 text-center bg-fantsy-orange-500"
-                            : "sm:hidden absolute top-0 left-[-100%] right-0 bottom-0 flex justify-center items-center w-full h-screen ease-in duration-300 text-center bg-fantsy-orange-500"
-                    }
-                >
-                    <ul>
-                        <li onClick={handleNav} className="p-4 text-xl hover:text-white">
+        <>
+            <div className="fixed left-0 h-16 py-1 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
+                <p className="absolute z-50">v0.3.0</p>
+                <div className="max-w-[1240px] m-auto flex justify-between items-center text-black">
+                    <Link href="/">
+                        <Image
+                            src={logo}
+                            alt="fantsy logo"
+                            width={55}
+                            height={55}
+                            placeholder="empty"
+                            priority="eager"
+                        />
+                    </Link>
+                    {/* ----------------DESKTOP MENU---------------- */}
+                    <ul className="hidden sm:flex sm:items-center">
+                        <li className="p-4 hover:text-white">
                             <Link href="/">Fantsys</Link>
-                        </li>
-                        <li onClick={handleNav} className="p-4 text-xl hover:text-white">
-                            <Link href="/about">Über Fantsy</Link>
                         </li>
                         <li className="p-4">
                             {user ? <>
-                                {profiles?.filter(profile => profile.email.includes(user?.email))
+                                {profiles?.filter(profile => profile.email.includes(user.email))
                                     .map(profile => {
-                                        return <UserDropDownMobile profile={profile} key={profile.id} />
+                                        return <UserDropDown profile={profile} key={profile.id} />
                                     })}</>
 
-                                : <button onClick={async () => {
-                                    window.location.href = "/login"
-                                }}><span className={styles.loginbutton}>Login</span></button>
+                                : <button onClick={() => setShowModal(true)}><span className={styles.loginbutton}>Login</span></button>
                             }
                         </li>
                         <li className="p-4">
-                            <p>
-                                {user ? <></> : <a href="/register"><span className="cursor-pointer hover:text-white">Register</span></a>}
-                            </p>
+                            {user ? <></> : <Link href="/join/register"><span className="cursor-pointer hover:text-white">Register</span></Link>}
                         </li>
                     </ul>
+
+                    {/* ----------------MOBILE DROPDOWN BUTTON---------------- */}
+                    <div onClick={handleNav} className="block sm:hidden z-10 cursor-pointer">
+                        {nav ? <AiOutlineClose size={20} /> : <AiOutlineMenu size={20} />}
+                    </div>
+
+                    {/* ----------------MOBILE MENU---------------- */}
+                    <div
+                        className={
+                            nav
+                                ? "sm:hidden absolute top-0 left-0 right-0 bottom-0 flex justify-center items-center w-full h-screen ease-in duration-300 text-center bg-fantsy-orange-500"
+                                : "sm:hidden absolute top-0 left-[-100%] right-0 bottom-0 flex justify-center items-center w-full h-screen ease-in duration-300 text-center bg-fantsy-orange-500"
+                        }
+                    >
+                        <ul>
+                            <li onClick={handleNav} className="p-4 text-xl hover:text-white">
+                                <Link href="/">Fantsys</Link>
+                            </li>
+                            <li onClick={handleNav} className="p-4 text-xl hover:text-white">
+                                <Link href="/about">Über Fantsy</Link>
+                            </li>
+                            <li className="p-4">
+                                {user ? <>
+                                    {profiles?.filter(profile => profile.email.includes(user?.email))
+                                        .map(profile => {
+                                            return <UserDropDownMobile profile={profile} key={profile.id} />
+                                        })}</>
+
+                                    : <button onClick={() => setShowModal(true)}><span className={styles.loginbutton}>Login</span></button>
+                                }
+                            </li>
+                            <li className="p-4">
+                                <p>
+                                    {user ? <></> : <a href="/join/register"><span className="cursor-pointer hover:text-white">Register</span></a>}
+                                </p>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
+
+            <Modal isVisible={showModal} onClose={() => { setShowModal(false) }}>
+                <Login />
+            </Modal>
+        </>
+
     )
 }
 

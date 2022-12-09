@@ -1,11 +1,11 @@
-import React, {useState, useEffect, useContext, createContext} from "react"
+import React, {useState, useEffect, createContext} from "react"
 import nookies from "nookies"
 
 import firebase from "firebase/compat/app"
 import "firebase/compat/auth"
 
-const AuthContext = createContext();
 
+const AuthContext = createContext();
 const AuthProvider = ({children}) => {
     // firebaseClient();
     const [user, setUser] = useState(null);

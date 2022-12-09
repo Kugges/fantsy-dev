@@ -72,6 +72,12 @@ const FantsyProvider = ({ children }) => {
                             displayName: doc.data().displayName,
                             userProfileUrl: doc.data().userProfileUrl,
                             userGender: doc.data().userGender,
+                            userSex: doc.data().userSex,
+                            profileSince: doc.data().profileSince,
+                            userBirthday: doc.data().userBirthday,
+                            userCity: doc.data().userCity,
+                            userPostcode: doc.data().userPostcode,
+                            userCountry: doc.data().userCountry,
                             likesCount: doc.data().likesCount,
                             bio: doc.data().bio
                         }
@@ -91,9 +97,17 @@ const FantsyProvider = ({ children }) => {
                 return {
                     id: doc.id,
                     data: {
-                        userProfileUrl: doc.data().userProfileUrl,
                         displayName: doc.data().displayName,
+                        userProfileUrl: doc.data().userProfileUrl,
+                        userGender: doc.data().userGender,
+                        userSex: doc.data().userSex,
+                        profileSince: doc.data().profileSince,
+                        userBirthday: doc.data().userBirthday,
+                        userCity: doc.data().userCity,
+                        userPostcode: doc.data().userPostcode,
+                        userCountry: doc.data().userCountry,
                         likesCount: doc.data().likesCount,
+                        workerProfile: doc.data().workerProfile,
                         bio: doc.data().bio
                     }
                 }

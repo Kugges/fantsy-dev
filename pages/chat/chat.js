@@ -1,5 +1,7 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { AiOutlineClose, AiOutlineSend, AiFillMessage, AiOutlineCaretRight, AiOutlineCaretLeft } from 'react-icons/ai'
+import { FaCaretRight, FaCaretLeft } from "react-icons/fa"
+import { BsChatDots  } from "react-icons/bs"
 import { useCollection, useCollectionData } from "react-firebase-hooks/firestore"
 import { fireDb } from '../../firebaseClient'
 import { addDoc, collection, getDocs, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
@@ -11,7 +13,7 @@ import Image from 'next/image'
 import prepic from "../../images/profile-starter.png"
 
 const styles = {
-    sidebarBtn: "cursor-pointer opacity-50 hover:opacity-100",
+    sidebarBtn: "text-black hover:text-white cursor-pointer",
     sidebarBtnRow: "flex fixed gap-2 top-5 right-5 z-40 invisible sm:visible"
 }
 
@@ -98,15 +100,15 @@ export default function Chat() {
                         })}
                 </div>
                 <div className={styles.sidebarBtnRow}>
-                    <AiFillMessage size={25} onClick={() => startChat()} className={styles.sidebarBtn} />
-                    <AiOutlineCaretLeft size={25} onClick={sidebarNav} className={sidebar ? styles.sidebarBtn : "hidden"} />
-                    <AiOutlineCaretRight size={25} onClick={sidebarNav} className={!sidebar ? styles.sidebarBtn : "hidden"} />
+                    <BsChatDots size={25} onClick={() => startChat()} className={styles.sidebarBtn} />
+                    <FaCaretLeft size={25} onClick={sidebarNav} className={sidebar ? styles.sidebarBtn : "hidden"} />
+                    <FaCaretRight size={25} onClick={sidebarNav} className={!sidebar ? styles.sidebarBtn : "hidden"} />
                 </div>
-                <div className={sidebar ? "bg-white fixed top-0 right-[-100%] h-screen w-52 z-30 ease-in duration-300" : "bg-white fixed top-0 right-0 h-screen w-52 z-30 ease-in duration-300"}>
-                    <div className="bg-fantsy-orange-200 h-16 px-5 flex items-center justify-between text-bold">
-                        Chats
+                <div className={!sidebar ? "fixed top-0 right-[-100%] h-screen w-52 z-30 ease-in duration-300" : "fixed top-0 right-0 h-screen w-52 z-30 ease-in duration-300"}>
+                    <div className="bg-white bg-opacity-20 h-16 py-1 px-5 flex items-center justify-between text-bold">
+                        <p>Meine Chats</p>
                     </div>
-                    <ul className="w-full h-full shadow-lg overflow-hidden overflow-y-scroll scrollbar-hide">
+                    <ul className="bg-white w-full h-full shadow-lg overflow-hidden overflow-y-scroll scrollbar-hide">
                         {chats?.filter(chat => chat.users.includes(user.email))
                             .map(chat => {
                                 return <ChatName chat={chat} key={chat.id} />
