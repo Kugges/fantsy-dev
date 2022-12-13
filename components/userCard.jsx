@@ -1,25 +1,41 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image';
 import { AiFillStar } from "react-icons/ai";
+import { AuthContext } from '../src/hook/auth';
 
 const styles = {
   userCard: "rounded-xl border-white border-8 shadow-lg bg-white overflow-hidden",
 }
 
+
 const UserCard = ({ profile }) => {
+  
+  const { user } = useContext(AuthContext)
 
   return (
     <div className={styles.userCard}>
-      <Link href={`/profile/${profile.id}`}>
-        <Image
-          src={profile.data.userProfileUrl}
-          height={100}
-          width={100}
-          alt="profileImg"
-          className="h-auto w-full aspect-square mx-auto hover:opacity-90"
-        />
-      </Link>
+      {user ? 
+            <Link href={`/profile/${profile.id}`}>
+
+            <Image
+              src={profile.data.userProfileUrl}
+              height={100}
+              width={100}
+              alt="profileImg"
+              className="h-auto w-full aspect-square mx-auto hover:opacity-90"
+            />
+          </Link>
+          :       
+          <Link href="/not-authenticated">
+          <Image
+            src={profile.data.userProfileUrl}
+            height={100}
+            width={100}
+            alt="profileImg"
+            className="h-auto w-full aspect-square mx-auto hover:opacity-90"
+          />
+        </Link>}
       <div>
         <p className="pt-2 font-bold text-left text-md sm:text-lg text-shade-600">{profile.data.displayName}</p>
         <div className="flex items-center justify-between">

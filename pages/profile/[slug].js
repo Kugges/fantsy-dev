@@ -13,7 +13,7 @@ const UserProfile = () => {
         if (profiles.length === 0) {
             return
         }
-        console.log(router.query.slug, "++SLUG") //REMOVE FOR PROD
+        // console.log(router.query.slug, "++SLUG") //REMOVE FOR PROD
 
         setProfile(profiles.find(profile => profile.id === router.query.slug))
     }, [])

@@ -1,6 +1,8 @@
 import firebase from "firebase/compat/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { getApp } from "@firebase/app"
+// import { getStripePayments } from "@stripe/firestore-stripe-payments";
 
 import "firebase/analytics";
 import "firebase/compat/storage";
@@ -16,11 +18,10 @@ const FIREBASE_CONFIG = {
     measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID
 }
 
+// INITIALIZE FIREBASE
 if (!firebase.apps.length) {
     firebase.initializeApp(FIREBASE_CONFIG);
-
-    // TODO ADD FOR GOOGLE ANALYTICS
-    
+    // TODO ADD FOR GOOGLE ANALYTICS    
     // if (typeof window !== "undefined") {
     //     if ("measurementId" in FIREBASE_CONFIG) {
     //         firebase.analytics();
@@ -29,9 +30,19 @@ if (!firebase.apps.length) {
     // }
 }
 
+const gotApp = getApp();
+
+
+
 const app = firebase.initializeApp(FIREBASE_CONFIG);
 const fireDb = getFirestore(app);
 const storage = firebase.storage();
 const auth = getAuth();
+
+
+// const payments = getStripePayments(app, {
+//     productsCollection: "subscriptions",
+//     customersCollection: "users",
+// })
 
 export { app, fireDb, storage, auth }

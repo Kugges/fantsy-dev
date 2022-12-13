@@ -1,4 +1,5 @@
 /** @type {import('next').NextConfig} */
+const withTM = require('next-transpile-modules')(['@stripe/firestore-stripe-payments']); 
 const nextConfig = {
   reactStrictMode: true,
   images: {
@@ -6,4 +7,8 @@ const nextConfig = {
   }
 }
 
+const nextTM = withTM()
+
+
 module.exports = nextConfig
+

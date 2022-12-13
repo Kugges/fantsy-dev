@@ -12,6 +12,8 @@ import { fireDb } from '../firebaseClient'
 import { useCollection } from 'react-firebase-hooks/firestore'
 import Modal from "../components/modal"
 import Login from '../pages/login'
+import { FantsyContext } from '../src/hook/FantsyContext'
+// import { createCheckoutSession } from '../stripe/createCheckoutSession'
 
 const styles = {
 
@@ -21,7 +23,6 @@ const styles = {
     dropdownMenu: "dropdown-menu sm:absolute py-2 min-w-max bg-fantsy-orange-500 text-base z-50 list-none text-center rounded-none shadow-none ease-in duration-100 sm:rounded-lg sm:shadow-lg",
     menuLi: "px-10 py-2 hover:text-white text-sm"
 }
-
 
 const Navbar = () => {
 
@@ -40,7 +41,7 @@ const Navbar = () => {
 
     const [snapshot, loading, error] = useCollection(collection(fireDb, "profiles"));
     const profiles = snapshot?.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    console.log(profiles, "YEAHHH")
+    // console.log(profiles, "YEAHHH")
     // console.log(user, "USER LOGGED IN")
     // console.log(currentProfile.data.userGender, "GIVE ME THE FIELD")
 
@@ -115,6 +116,9 @@ const Navbar = () => {
                     <li className={styles.menuLi} onClick={handleInnerNav}>
                         <Link href="/join/account">Account</Link>
                     </li>
+                    {/* <li className={styles.menuLi} onClick={() => createCheckoutSession(user.uid)}>
+                        <p>Upgrade to premium!</p>
+                    </li> */}
                     <li className={styles.menuLi}>
                         <button
                             onClick={async () => {
@@ -132,7 +136,7 @@ const Navbar = () => {
     return (
         <>
             <div className="fixed left-0 h-16 py-1 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
-                <p className="absolute z-50">v0.3.0</p>
+                <p className="absolute z-50">v0.3.2</p>
                 <div className="max-w-[1240px] m-auto flex justify-between items-center text-black">
                     <Link href="/">
                         <Image

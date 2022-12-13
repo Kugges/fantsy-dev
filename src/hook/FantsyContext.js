@@ -11,7 +11,8 @@ const FantsyProvider = ({ children }) => {
 
     const [users, setUsers] = useState([])
     const [currentLoggedUser, setCurrentUser] = useState([])
-    const [profiles, setProfiles] = useState([])
+    const [profiles, setProfiles] = useState([])  
+    const [workerProfiles, setWorkerProfiles] = useState([])
     const [currentProfile, setCurrentProfile] = useState([])   
 
     const { user } = useContext(AuthContext)        
@@ -90,10 +91,10 @@ const FantsyProvider = ({ children }) => {
 
     // GET ALL WORKER PROFILE DOCUMENTS
     useEffect(() => {
-        const getProfiles = async () => {
+        const getWorkerProfiles = async () => {
             const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('workerProfile', '==', true)))
             // console.log(querySnapshot, "CHECK OUT")
-            setProfiles(querySnapshot?.docs.map(doc => {
+            setWorkerProfiles(querySnapshot?.docs.map(doc => {
                 return {
                     id: doc.id,
                     data: {
@@ -113,8 +114,36 @@ const FantsyProvider = ({ children }) => {
                 }
             }))
         }
-        getProfiles()
-    }, [])
+        getWorkerProfiles()
+    }, [workerProfiles])
+
+        // GET ALL PROFILE DOCUMENTS
+        useEffect(() => {
+            const getProfiles = async () => {
+                const querySnapshot = await getDocs(collection(fireDb, "profiles"))
+                // console.log(querySnapshot, "CHECK OUT")
+                setProfiles(querySnapshot?.docs.map(doc => {
+                    return {
+                        id: doc.id,
+                        data: {
+                            displayName: doc.data().displayName,
+                            userProfileUrl: doc.data().userProfileUrl,
+                            userGender: doc.data().userGender,
+                            userSex: doc.data().userSex,
+                            profileSince: doc.data().profileSince,
+                            userBirthday: doc.data().userBirthday,
+                            userCity: doc.data().userCity,
+                            userPostcode: doc.data().userPostcode,
+                            userCountry: doc.data().userCountry,
+                            likesCount: doc.data().likesCount,
+                            workerProfile: doc.data().workerProfile,
+                            bio: doc.data().bio
+                        }
+                    }
+                }))
+            }
+            getProfiles()
+        }, [profiles])
 
     // GET THE OTHER CHAT PARTICIPANT
     // const [otherProfile, setOtherProfile] = useState([])
@@ -137,7 +166,7 @@ const FantsyProvider = ({ children }) => {
 
     return (
         <FantsyContext.Provider
-            value={{ profiles, users, currentLoggedUser, currentProfile }}
+            value={{ profiles, workerProfiles, users, currentLoggedUser, currentProfile }}
         >{children}</FantsyContext.Provider>
     )
 }

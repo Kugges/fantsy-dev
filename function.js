@@ -8,12 +8,12 @@ const isDev = process.env.NODE_ENV !== 'production';
 const server = next({
   dev: isDev,
   //location of .next generated after running -> yarn build
-  conf: { 
+  conf: {
     distDir: '.next',
     images: {
-      domains:  ['fantsy-net.web.app', 'firebasestorage.googleapis.com'],
+      domains: ['fantsy-net.web.app', 'firebasestorage.googleapis.com'],
     }
-   },
+  },
   // conf: customNextConfig,
 });
 
