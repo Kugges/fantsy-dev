@@ -2,13 +2,17 @@
 const withTM = require('next-transpile-modules')(['@stripe/firestore-stripe-payments']); 
 const nextConfig = {
   reactStrictMode: true,
+  webpack: {
+    configure: {
+      experiments: {
+        topLevelAwait: true,
+      }
+    }
+  },
   images: {
     domains: ['fantsy-net.web.app', 'firebasestorage.googleapis.com'],
   }
 }
 
-const nextTM = withTM()
-
-
-module.exports = nextConfig
+module.exports = withTM(nextConfig)
 

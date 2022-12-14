@@ -2,7 +2,7 @@ import firebase from "firebase/compat/app";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
 import { getApp } from "@firebase/app"
-// import { getStripePayments } from "@stripe/firestore-stripe-payments";
+import { getStripePayments, getProducts, createCheckoutSession } from "@stripe/firestore-stripe-payments";
 
 import "firebase/analytics";
 import "firebase/compat/storage";
@@ -30,9 +30,6 @@ if (!firebase.apps.length) {
     // }
 }
 
-const gotApp = getApp();
-
-
 
 const app = firebase.initializeApp(FIREBASE_CONFIG);
 const fireDb = getFirestore(app);
@@ -40,9 +37,5 @@ const storage = firebase.storage();
 const auth = getAuth();
 
 
-// const payments = getStripePayments(app, {
-//     productsCollection: "subscriptions",
-//     customersCollection: "users",
-// })
 
 export { app, fireDb, storage, auth }

@@ -2,6 +2,7 @@ import firebase from "firebase/compat/app";
 import { addDoc, collection } from "firebase/firestore";
 import { fireDb } from "../firebaseClient";
 import getStripe from "./initializeStripe";
+import "firebase/compat/firestore"
 
 export async function createCheckoutSession(uid: string) {
     const firestore = firebase.firestore();

@@ -13,7 +13,8 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import Modal from "../components/modal"
 import Login from '../pages/login'
 import { FantsyContext } from '../src/hook/FantsyContext'
-// import { createCheckoutSession } from '../stripe/createCheckoutSession'
+import { createCheckoutSession } from '../stripe/createCheckoutSession'
+import usePremiumStatus from '../stripe/usePremiumStatus'
 
 const styles = {
 
@@ -35,16 +36,13 @@ const Navbar = () => {
 
     const [showModal, setShowModal] = useState(false)
 
-
     const { user } = useContext(AuthContext)
-    // const { profiles } = useContext(FantsyContext)
+
+    // CHECK IF USER IS STRIPE PREMIUM
+    const userIsPremium = usePremiumStatus(user)
 
     const [snapshot, loading, error] = useCollection(collection(fireDb, "profiles"));
     const profiles = snapshot?.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    // console.log(profiles, "YEAHHH")
-    // console.log(user, "USER LOGGED IN")
-    // console.log(currentProfile.data.userGender, "GIVE ME THE FIELD")
-
 
     const UserDropDownMobile = ({ profile }) => {
         const [innerNav, setinnerNav] = useState(false);
@@ -116,9 +114,14 @@ const Navbar = () => {
                     <li className={styles.menuLi} onClick={handleInnerNav}>
                         <Link href="/join/account">Account</Link>
                     </li>
-                    {/* <li className={styles.menuLi} onClick={() => createCheckoutSession(user.uid)}>
-                        <p>Upgrade to premium!</p>
-                    </li> */}
+                    {!userIsPremium ? (
+                        
+                    <li className={styles.menuLi} onClick={() => createCheckoutSession(user.uid)}>
+                    <p>Upgrade to premium!</p>
+                </li>
+                    ) : (
+                        <h2>COOKIE</h2>
+                    )}
                     <li className={styles.menuLi}>
                         <button
                             onClick={async () => {
@@ -136,7 +139,7 @@ const Navbar = () => {
     return (
         <>
             <div className="fixed left-0 h-16 py-1 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
-                <p className="absolute z-50">v0.3.2</p>
+                <p className="absolute z-50">v0.3.3</p>
                 <div className="max-w-[1240px] m-auto flex justify-between items-center text-black">
                     <Link href="/">
                         <Image
