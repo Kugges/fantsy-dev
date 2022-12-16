@@ -87,7 +87,7 @@ const FantsyProvider = ({ children }) => {
             }
             getCurrentProfile()
         }
-    }, [currentProfile])
+    }, [])
 
     // GET ALL WORKER PROFILE DOCUMENTS
     useEffect(() => {
@@ -115,7 +115,7 @@ const FantsyProvider = ({ children }) => {
             }))
         }
         getWorkerProfiles()
-    }, [workerProfiles])
+    }, [])
 
         // GET ALL PROFILE DOCUMENTS
         useEffect(() => {
@@ -143,7 +143,7 @@ const FantsyProvider = ({ children }) => {
                 }))
             }
             getProfiles()
-        }, [profiles])
+        }, [])
 
     // GET THE OTHER CHAT PARTICIPANT
     // const [otherProfile, setOtherProfile] = useState([])

@@ -20,7 +20,7 @@ const AuthProvider = ({children}) => {
             const token = await user.getIdToken();
             setUser(user);
             nookies.set(undefined, "token" , token,{});
-            console.log(token, "USER TOKEN HERE")
+            // console.log(token, "USER TOKEN HERE")
         });
     }, []);
 

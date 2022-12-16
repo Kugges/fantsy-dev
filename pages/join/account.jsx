@@ -6,7 +6,6 @@ import { toast } from "react-toastify"
 import Container from '../../components/container'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
-import Datepicker from "react-datepicker"
 
 
 const styles = {

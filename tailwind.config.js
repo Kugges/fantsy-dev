@@ -67,8 +67,8 @@ module.exports = {
     },
     extend: {
       fontFamily: {
-        'soleto': ["Soleto", 'Helvetica', 'Verdana', 'Tahoma', 'sans-serif'],
-        'soleto-bold': ["Soleto-Medium", 'Helvetica', 'Verdana', 'Tahoma', 'sans-serif'],
+        // 'soleto': ["Soleto", 'Helvetica', 'Verdana', 'Tahoma', 'sans-serif'],
+        // 'soleto-bold': ["Soleto-Medium", 'Helvetica', 'Verdana', 'Tahoma', 'sans-serif'],
         'lofty-goals': ["Lofty Goals Regular", 'Helvetica', 'Verdana', 'Tahoma', 'sans-serif'],
       }
     },

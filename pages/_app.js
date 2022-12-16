@@ -25,26 +25,26 @@ function MyApp({ Component, pageProps }) {
   return (
 
     <>
-    <Head>
-      <title>fantsy.net</title>
-      <meta name="description" content="Social Media for Sexworking" />
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
+      <Head>
+        <title>fantsy.net</title>
+        <meta name="description" content="Social Media for Sexworking" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
       <ToastContainer />
-      <AuthProvider>
-        <FantsyProvider>
-          <>{isLoading ?
-            <Loader />
-            :
-            <>
-              <Navbar />              
-              <Component {...pageProps} />
-              <Chat />
-              <Footer />
-            </>
-          }</>
-        </FantsyProvider>
-      </AuthProvider>
+        <AuthProvider>
+          <FantsyProvider>
+            <>{isLoading ?
+              <Loader />
+              :
+              <>
+                <Navbar />
+                <Component {...pageProps} />
+                <Chat />
+                <Footer />
+              </>
+            }</>
+          </FantsyProvider>
+        </AuthProvider>
     </>
   )
 

@@ -14,7 +14,7 @@ const UserCard = ({ profile }) => {
   const { user } = useContext(AuthContext)
 
   return (
-    <div className={styles.userCard}>
+    <div className={styles.userCard} key={profile.id}>
       {user ? 
             <Link href={`/profile/${profile.id}`}>
 
