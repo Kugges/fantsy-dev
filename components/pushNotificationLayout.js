@@ -29,7 +29,7 @@ function PushNotificationLayout({ children }) {
                 console.log(error);
             }
         }
-    });
+    }, []);
 
     // Handles the click function on the toast showing push notification
     const handleClickPushNotification = (url) => {

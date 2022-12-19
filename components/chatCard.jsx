@@ -78,13 +78,13 @@ const ChatCard = ({ chat }) => {
         <div id={chat.id} className={styles.chatWindow}>
             {/* EMAIL OF OTHER PARTICIPANT IN CHAT */}
             <div className={styles.chatHeader}>
-                <span>{otherProfile.data?.displayName}</span>
+                <span>{otherProfile?.data?.displayName}</span>
                 <AiOutlineClose className="cursor-pointer" onClick={handleClick} />
             </div>
             {/* CHAT MESSAGE AREA */}
             <div className={styles.chatArea}>
                 {getMessages()}
-                <p className="text-center text-xs text-shade-300 py-3">Chat mit {otherProfile.data?.displayName} gestartet!</p>
+                <p className="text-center text-xs text-shade-300 py-3">Chat mit {otherProfile?.data?.displayName} gestartet!</p>
                 {/* <div ref={bottomOfChat}></div> */}
             </div>
             {/* SEND MESSAGE */}

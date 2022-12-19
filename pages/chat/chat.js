@@ -68,7 +68,7 @@ export default function Chat() {
                 <div className="rounded-full bg-fantsy-green-500 w-3 h-3 mr-3 border-white border"></div>
                 <div className="rounded-full overflow-hidden w-10 h-10">
                     <Image
-                        src={otherProfile.data?.userProfileUrl}
+                        src={otherProfile?.data?.userProfileUrl}
                         alt="profile image"
                         layout="responsive"
                         width={70}
@@ -77,7 +77,7 @@ export default function Chat() {
                     />
                 </div>
                 <div className="ml-3 text-sm font-bold">
-                    {otherProfile.data?.displayName}
+                    {otherProfile?.data?.displayName}
                 </div>
             </li>
         )

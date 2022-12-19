@@ -19,29 +19,6 @@ const FantsyProvider = ({ children }) => {
     // var variable = getOtherEmail(chat.users, user);
     // console.log(variable, "VARIABEL")
 
-    // // GET CURRENT USER DOCUMENT
-    // useEffect(() => {
-    //     const currentUser = user?.uid
-    //     if (user) {
-    //         const getCurrentUser = async () => {
-    //             const docSnap = await getDocs(query(collection(fireDb, "users"), where('id', '==', currentUser)))
-    //             // const docSnap = await getDoc(doc(fireDb, "users", currentUser))
-    //             // console.log(docSnap, "WUPPINGER")
-    //             setCurrentUser(docSnap.docs.map(doc => {
-    //                 return {
-    //                     id: doc.id,
-    //                     data: {
-    //                         email: doc.data().email,
-    //                         hasSubscription: doc.data().hasSubscription,
-    //                         profileId: doc.data().profileId
-    //                     }
-    //                 }
-    //             })[0])
-    //         }
-    //         getCurrentUser()
-    //     }
-    // }, [])
-
     // GET ALL USER DOCUMENTS
     useEffect(() => {
         const getUsers = async () => {
@@ -70,17 +47,7 @@ const FantsyProvider = ({ children }) => {
                     return {
                         id: doc.id,
                         data: {
-                            displayName: doc.data().displayName,
-                            userProfileUrl: doc.data().userProfileUrl,
-                            userGender: doc.data().userGender,
-                            userSex: doc.data().userSex,
-                            profileSince: doc.data().profileSince,
-                            userBirthday: doc.data().userBirthday,
-                            userCity: doc.data().userCity,
-                            userPostcode: doc.data().userPostcode,
-                            userCountry: doc.data().userCountry,
-                            likesCount: doc.data().likesCount,
-                            bio: doc.data().bio
+                            ...doc.data()
                         }
                     }
                 })[0])
@@ -98,18 +65,7 @@ const FantsyProvider = ({ children }) => {
                 return {
                     id: doc.id,
                     data: {
-                        displayName: doc.data().displayName,
-                        userProfileUrl: doc.data().userProfileUrl,
-                        userGender: doc.data().userGender,
-                        userSex: doc.data().userSex,
-                        profileSince: doc.data().profileSince,
-                        userBirthday: doc.data().userBirthday,
-                        userCity: doc.data().userCity,
-                        userPostcode: doc.data().userPostcode,
-                        userCountry: doc.data().userCountry,
-                        likesCount: doc.data().likesCount,
-                        workerProfile: doc.data().workerProfile,
-                        bio: doc.data().bio
+                        ...doc.data()
                     }
                 }
             }))
@@ -126,43 +82,13 @@ const FantsyProvider = ({ children }) => {
                     return {
                         id: doc.id,
                         data: {
-                            displayName: doc.data().displayName,
-                            userProfileUrl: doc.data().userProfileUrl,
-                            userGender: doc.data().userGender,
-                            userSex: doc.data().userSex,
-                            profileSince: doc.data().profileSince,
-                            userBirthday: doc.data().userBirthday,
-                            userCity: doc.data().userCity,
-                            userPostcode: doc.data().userPostcode,
-                            userCountry: doc.data().userCountry,
-                            likesCount: doc.data().likesCount,
-                            workerProfile: doc.data().workerProfile,
-                            bio: doc.data().bio
+                            ...doc.data()
                         }
                     }
                 }))
             }
             getProfiles()
         }, [])
-
-    // GET THE OTHER CHAT PARTICIPANT
-    // const [otherProfile, setOtherProfile] = useState([])
-    // useEffect(() => {
-    //     const getOtherProfile = async () => {
-    //         const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where("email", "==", otherUser)))
-    //         // console.log(querySnapshot, "WUPPINGER")
-    //         setOtherProfile(querySnapshot.docs?.map(doc => {
-    //             return {
-    //                 id: doc.id,
-    //                 data: {
-    //                     ...doc.data()
-    //                 }
-    //             }
-    //         })[0])
-    //     }
-    //     getOtherProfile()
-    // }, [])
-
 
     return (
         <FantsyContext.Provider
