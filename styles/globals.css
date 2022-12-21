@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
+/* @layer base {
   @font-face {
     font-family: Soleto Regular;
     font-weight: normal;
@@ -23,7 +23,7 @@
     font-weight: normal;
     src: url(/src/fonts/soleto/Soleto-Regular.ttf) format("ttf");
   }
-}
+} */
 
 html,
 body {

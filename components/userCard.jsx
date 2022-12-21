@@ -25,7 +25,7 @@ const UserCard = ({ profile }) => {
         {user ?
           <Link href={`/profile/${profile.id}`}>
             <Image
-              src={profile.data.userProfileUrl}
+              src={profile?.data?.userProfileUrl}
               height={100}
               width={100}
               alt="profileImg"
@@ -71,16 +71,16 @@ const UserCard = ({ profile }) => {
             <div className="bg-shade-200 aspect-square animate-pulse"></div>)}
         </Link>} */}
       <div>
-        <p className="pt-2 font-bold text-left text-md sm:text-lg text-shade-600">{profile.data.displayName}</p>
+        <p className="pt-2 font-bold text-left text-md sm:text-lg text-shade-600">{profile?.data?.displayName}</p>
         <div className="flex items-center justify-between">
           <div className="flex">
-            {profile.data.likesCount === 0 ?
+            {profile?.data?.likesCount === 0 ?
               <AiFillStar className="text-shade-200 mr-1" size={25} /> :
               <AiFillStar className="text-fantsy-orange-500 mr-1" size={25} />}
-            <p>{profile.data.likesCount}</p>
+            <p>{profile?.data?.likesCount}</p>
           </div>
           <div>
-            <p>{profile.data.userPostcode}, {profile.data.userCity} </p>
+            <p>{profile?.data?.userCity}</p>
           </div>
         </div>
       </div>

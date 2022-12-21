@@ -24,8 +24,6 @@ const styles = {
     // profileRating: "flex gap-1 text-fantsy-orange-500 justify-center items-center",
 }
 
-
-
 const UserProfileMain = ({ profile }) => {
 
     const dateString = profile.data?.userBirthday;
@@ -42,7 +40,7 @@ const UserProfileMain = ({ profile }) => {
     const query = collection(fireDb, `profiles/${user.uid}/details`);
     const [docs, loading, error] = useCollectionData(query);
 
-    const isWorker = profile.data?.workerProfile;
+    const isWorker = profile?.data?.workerProfile;
 
     if (isWorker === true) {
         return (

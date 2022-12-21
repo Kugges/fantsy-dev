@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { collection, addDoc, serverTimestamp, updateDoc, doc, setDoc } from 'firebase/firestore'
 import { fireDb } from '../../firebaseClient'
 import { AuthContext } from "../../src/hook/auth"
@@ -6,6 +6,8 @@ import { toast } from "react-toastify"
 import Container from '../../components/container'
 import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
+import firebase from "firebase/compat/app"
+import { GeoPoint } from 'firebase/firestore'
 
 
 const styles = {
@@ -37,22 +39,23 @@ const WorkerAccountDetails = () => {
 
     const { register, handleSubmit, formState: { errors }, submitting } = useForm();
 
+    // GET USERS GEO LOCATION
+    useEffect(() => {
+        const getUsersLocation = async () => {
+            navigator.geolocation.getCurrentPosition(position => {
+                firebase
+                    .firestore()
+                    .collection("profiles")
+                    .doc(user.uid)
+                    .update({
+                        location: new GeoPoint(position.coords.latitude, position.coords.longitude)
+                    })
+            })
+            console.log("geolocation updated!")
 
-
-    // const genderSelection = (value) => {
-    //     return value === "1" || value === "2" || value === "3";
-    // }
-    // const sexSelection = (value) => {
-    //     return value === "5" || value === "6" || value === "7";
-    // }
-    // const prenameSelection = (value) => {
-    //     return value !== "";
-    // }
-    // const prenameWatch = watch("prename")
-    // const lastnameWatch = watch("lastname")
-    // const genderWatch = watch("gender")
-    // const sexuAlityWatch = watch("sexuality")
-
+        }
+        getUsersLocation()
+    }, [])
 
 
     // CREATE PROFILE DOC & SAVE TO FIRESTORE
@@ -144,9 +147,9 @@ const WorkerAccountDetails = () => {
                             value={gender}
                         >
                             <option value="">Wähle aus</option>
-                            <option value="1">Weiblich</option>
-                            <option value="2">Männlich</option>
-                            <option value="3">Divers</option>
+                            <option value="Weiblich">Weiblich</option>
+                            <option value="Männlich">Männlich</option>
+                            <option value="Divers">Divers</option>
                         </select>
                         {errors.gender && <p className={styles.errormsg}>Wähle dein Geschlecht aus.</p>}
                     </div>
@@ -163,9 +166,9 @@ const WorkerAccountDetails = () => {
                             value={sexuality}
                         >
                             <option value="">Wähle aus</option>
-                            <option value="5">Heterosexuell</option>
-                            <option value="6">Homosexuell</option>
-                            <option value="7">Bisexuell</option>
+                            <option value="Heterosexuell">Heterosexuell</option>
+                            <option value="Homosexuell">Homosexuell</option>
+                            <option value="Bisexuell">Bisexuell</option>
                         </select>
                         {errors.sexuality && <p className={styles.errormsg}>Wähle deine Sexualität.</p>}
                     </div>

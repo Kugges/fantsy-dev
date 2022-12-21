@@ -1,5 +1,5 @@
 import { createContext, useEffect, useState, useContext } from "react"
-import { collection, getDocs, getDoc, doc, where, query, } from "firebase/firestore"
+import { collection, getDocs, getDoc, doc, where, query, orderBy } from "firebase/firestore"
 import { fireDb } from "../../firebaseClient"
 import { AuthContext } from "./auth"
 import firebase from "firebase/compat/app";
@@ -60,7 +60,8 @@ const FantsyProvider = ({ children }) => {
     useEffect(() => {
         const getWorkerProfiles = async () => {
             const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('workerProfile', '==', true)))
-            // console.log(querySnapshot, "CHECK OUT")
+            // const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('workerProfile', '==', true), orderBy("location", "near")))
+            console.log(querySnapshot, "CHECK OUT")
             setWorkerProfiles(querySnapshot?.docs.map(doc => {
                 return {
                     id: doc.id,

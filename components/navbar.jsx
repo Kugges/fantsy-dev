@@ -139,7 +139,7 @@ const Navbar = () => {
     return (
         <>
             <div className="fixed left-0 h-16 py-1 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
-                <p className="absolute z-50">v0.4.0</p>
+                <p className="absolute z-50">v0.4.4</p>
                 <div className="max-w-[1240px] m-auto flex justify-between items-center text-black">
                     <Link href="/">
                         <Image

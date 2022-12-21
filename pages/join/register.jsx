@@ -141,7 +141,7 @@ export default function Register() {
               {...register('confirmPassword',
                 {
                   required: true,
-                  minLength: { value: 8, message: "Passwort muss aus mindestens 8 Zeichen bestehen." },
+                  minLength: { value: 8 },
                   validate: value =>
                     value === checkPassword.current || "Passwörter stimmen nicht überein."
                 })}
@@ -158,7 +158,7 @@ export default function Register() {
           </div>
 
           {errors?.confirmPassword && errors?.confirmPassword.type === "required" && <p className={styles.errormsg}>Passwort fehlt.</p>}
-          {errors?.confirmPassword && errors?.confirmPassword.type === "minLength" && <p className={styles.errormsg}>{errors?.password.message}</p>}
+          {errors?.confirmPassword && errors?.confirmPassword.type === "minLength" && <p className={styles.errormsg}>Passwort muss aus mindestens 8 Zeichen bestehen.</p>}
           {errors?.confirmPassword && errors?.confirmPassword.type === "validate" && <p className={styles.errormsg}>Passwörter stimmen nicht überein.</p>}
         </div>
         {/* ---READ AGB--- */}
