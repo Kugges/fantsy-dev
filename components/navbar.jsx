@@ -70,7 +70,7 @@ const Navbar = () => {
                         <Link href={`/profile/${profile.id}`}>Mein Profil</Link>
                     </li>
                     <li className={styles.menuLi}>
-                        <Link href="/account">Account</Link>
+                        <Link href="/dashboard/account">Account</Link>
                     </li>
                     <li className={styles.menuLi}>
                         <button
@@ -112,7 +112,7 @@ const Navbar = () => {
                         <Link href={`/profile/${profile.id}`}>Mein Profil</Link>
                     </li>
                     <li className={styles.menuLi} onClick={handleInnerNav}>
-                        <Link href="/join/account">Account</Link>
+                        <Link href="/dashboard/account">Account</Link>
                     </li>
                     {!userIsPremium ? (
                         
@@ -139,8 +139,8 @@ const Navbar = () => {
     return (
         <>
             <div className="fixed left-0 h-16 py-1 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
-                <p className="absolute z-50">v0.4.4</p>
-                <div className="max-w-[1240px] m-auto flex justify-between items-center text-black">
+                <p className="absolute z-50">v0.4.6</p>
+                <div className="w-11/12 sm:max-w-[1240px] m-auto flex justify-between items-center text-black">
                     <Link href="/">
                         <Image
                             src={logo}

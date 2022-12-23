@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { AiOutlineClose, AiOutlineSend, AiFillMessage, AiOutlineCaretRight, AiOutlineCaretLeft } from 'react-icons/ai'
-import { FaCaretRight, FaCaretLeft } from "react-icons/fa"
+import { BiChevronRight, BiChevronLeft } from "react-icons/bi"
 import { BsChatDots  } from "react-icons/bs"
 import { useCollection, useCollectionData } from "react-firebase-hooks/firestore"
 import { fireDb } from '../../firebaseClient'
@@ -13,8 +13,8 @@ import Image from 'next/image'
 import prepic from "../../images/profile-starter.png"
 
 const styles = {
-    sidebarBtn: "text-black hover:text-white cursor-pointer",
-    sidebarBtnRow: "flex fixed gap-2 top-5 right-5 z-40 invisible sm:visible"
+    sidebarBtn: "text-black cursor-pointer active:bg-fantsy-orange-600 hover:bg-fantsy-orange-600 p-1 rounded-full",
+    sidebarBtnRow: "flex fixed gap-2 right-5 top-4 z-40 invisible sm:visible"
 }
 
 
@@ -70,7 +70,6 @@ export default function Chat() {
                     <Image
                         src={otherProfile?.data?.userProfileUrl}
                         alt="profile image"
-                        layout="responsive"
                         width={70}
                         height={70}
                         priority="eager"
@@ -100,9 +99,9 @@ export default function Chat() {
                         })}
                 </div>
                 <div className={styles.sidebarBtnRow}>
-                    <BsChatDots size={25} onClick={() => startChat()} className={styles.sidebarBtn} />
-                    <FaCaretLeft size={25} onClick={sidebarNav} className={sidebar ? styles.sidebarBtn : "hidden"} />
-                    <FaCaretRight size={25} onClick={sidebarNav} className={!sidebar ? styles.sidebarBtn : "hidden"} />
+                    <BsChatDots size={35} onClick={() => startChat()} className={styles.sidebarBtn} />
+                    <BiChevronLeft size={35} onClick={sidebarNav} className={sidebar ? styles.sidebarBtn : "hidden"} />
+                    <BiChevronRight size={35} onClick={sidebarNav} className={!sidebar ? styles.sidebarBtn : "hidden"} />
                 </div>
                 <div className={!sidebar ? "fixed top-0 right-[-100%] h-screen w-52 z-30 ease-in duration-300" : "fixed top-0 right-0 h-screen w-52 z-30 ease-in duration-300"}>
                     <div className="bg-white bg-opacity-20 h-16 py-1 px-5 flex items-center justify-between text-bold">

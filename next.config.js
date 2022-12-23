@@ -1,7 +1,13 @@
 /** @type {import('next').NextConfig} */
-const withTM = require('next-transpile-modules')(['@stripe/firestore-stripe-payments']); 
+const withTM = require('next-transpile-modules')(['@stripe/firestore-stripe-payments']);
 const nextConfig = {
   reactStrictMode: true,
+  // plugins: [
+  //   require('flowbite/plugin')
+  // ],
+  // content: [
+  //   "./node_modules/flowbite/**/*.js"
+  // ],
   webpack: {
     configure: {
       experiments: {

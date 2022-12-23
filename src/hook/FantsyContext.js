@@ -2,23 +2,18 @@ import { createContext, useEffect, useState, useContext } from "react"
 import { collection, getDocs, getDoc, doc, where, query, orderBy } from "firebase/firestore"
 import { fireDb } from "../../firebaseClient"
 import { AuthContext } from "./auth"
-import firebase from "firebase/compat/app";
-import getOtherEmail from "../../utils/getOtherEmail";
 
 const FantsyContext = createContext()
 
 const FantsyProvider = ({ children }) => {
 
     const [users, setUsers] = useState([])
-    const [currentLoggedUser, setCurrentUser] = useState([])
     const [profiles, setProfiles] = useState([])  
-    const [workerProfiles, setWorkerProfiles] = useState([])
+    // const [workerProfiles, setWorkerProfiles] = useState([])
     const [currentProfile, setCurrentProfile] = useState([])   
 
-    const { user } = useContext(AuthContext)        
-    // var variable = getOtherEmail(chat.users, user);
-    // console.log(variable, "VARIABEL")
-
+    const { user } = useContext(AuthContext)
+    
     // GET ALL USER DOCUMENTS
     useEffect(() => {
         const getUsers = async () => {
@@ -56,23 +51,23 @@ const FantsyProvider = ({ children }) => {
         }
     }, [])
 
-    // GET ALL WORKER PROFILE DOCUMENTS
-    useEffect(() => {
-        const getWorkerProfiles = async () => {
-            const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('workerProfile', '==', true)))
-            // const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('workerProfile', '==', true), orderBy("location", "near")))
-            console.log(querySnapshot, "CHECK OUT")
-            setWorkerProfiles(querySnapshot?.docs.map(doc => {
-                return {
-                    id: doc.id,
-                    data: {
-                        ...doc.data()
-                    }
-                }
-            }))
-        }
-        getWorkerProfiles()
-    }, [])
+    // // GET ALL WORKER PROFILE DOCUMENTS
+    // useEffect(() => {
+    //     const getWorkerProfiles = async () => {
+    //         const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('workerProfile', '==', true)))
+    //         // const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('workerProfile', '==', true), orderBy("location", "near")))
+    //         console.log(querySnapshot, "CHECK OUT")
+    //         setWorkerProfiles(querySnapshot?.docs.map(doc => {
+    //             return {
+    //                 id: doc.id,
+    //                 data: {
+    //                     ...doc.data()
+    //                 }
+    //             }
+    //         }))
+    //     }
+    //     getWorkerProfiles()
+    // }, [])
 
         // GET ALL PROFILE DOCUMENTS
         useEffect(() => {
@@ -93,7 +88,7 @@ const FantsyProvider = ({ children }) => {
 
     return (
         <FantsyContext.Provider
-            value={{ profiles, workerProfiles, users, currentLoggedUser, currentProfile }}
+            value={{ profiles, users, currentProfile }}
         >{children}</FantsyContext.Provider>
     )
 }

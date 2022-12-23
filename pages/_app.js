@@ -21,33 +21,38 @@ function MyApp({ Component, pageProps }) {
     router.isReady && setIsLoading(false)
   }, [])
 
+  // ADD FLOWBITE IF NEEDED
+  // useEffect(() => {
+  //   import("flowbite")
+  // }, [])
+
 
   return (
 
     <>
       <Head>
         <title>fantsy.net</title>
-        <meta name="description" content="Social Media for Sexworking" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      <ToastContainer />
-        <AuthProvider>
-          <FantsyProvider>
-            <>{isLoading ?
-              <Loader />
-              :
-              <>
-                <Navbar />
-                <Component {...pageProps} />
-                <Chat />
-                <Footer />
-              </>
-            }</>
-          </FantsyProvider>
-        </AuthProvider>
-    </>
-  )
+            <meta charset="UTF-8" name="description" content="Social Media for Sexworking" />
+            <link rel="icon" href="/favicon.ico" />
+          </Head>
+          <ToastContainer />
+          <AuthProvider>
+            <FantsyProvider>
+              <>{isLoading ?
+                <Loader />
+                :
+                <>
+                  <Navbar />
+                  <Component {...pageProps} />
+                  <Chat />
+                  <Footer />
+                </>
+              }</>
+            </FantsyProvider>
+          </AuthProvider>
+        </>
+        )
 
 }
 
-export default MyApp
+        export default MyApp

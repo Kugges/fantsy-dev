@@ -87,7 +87,7 @@ const Photo = () => {
                                 width={200}
                                 height={200}
                                 placeholder="Avatar"
-                                priority="eager"
+                                priority
                                 // className={file ? styles.avatarOut : styles.avatarIn}
                                 className={styles.avatarIn}
                             />

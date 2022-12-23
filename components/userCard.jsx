@@ -21,41 +21,16 @@ const UserCard = ({ profile }) => {
 
   return (
     <div className={styles.userCard} key={profile.id}>
-      <Suspense fallback={<LoadingFallback />}>
-        {user ?
-          <Link href={`/profile/${profile.id}`}>
-            <Image
-              src={profile?.data?.userProfileUrl}
-              height={100}
-              width={100}
-              alt="profileImg"
-              className="h-auto w-full aspect-square mx-auto hover:opacity-90"
-            />
-          </Link>
-          :
-          <Link href="/not-authenticated">
-            <Image
-              src={profile.data.userProfileUrl}
-              height={100}
-              width={100}
-              alt="profileImg"
-              className="h-auto w-full aspect-square mx-auto hover:opacity-90"
-            />
-          </Link>}
-      </Suspense>
-      {/* {user ?
+      {user ?
         <Link href={`/profile/${profile.id}`}>
-
           <Image
-            src={profile.data.userProfileUrl}
+            src={profile?.data?.userProfileUrl}
             height={100}
             width={100}
             alt="profileImg"
+            placeholder={LoadingFallback}
             className="h-auto w-full aspect-square mx-auto hover:opacity-90"
-            onLoad={() => setIsLoading(false)}
           />
-          {isLoading && (
-            <div className="bg-shade-200 aspect-square animate-pulse"></div>)}
         </Link>
         :
         <Link href="/not-authenticated">
@@ -64,12 +39,10 @@ const UserCard = ({ profile }) => {
             height={100}
             width={100}
             alt="profileImg"
+            placeholder={LoadingFallback}
             className="h-auto w-full aspect-square mx-auto hover:opacity-90"
-            onLoad={() => setIsLoading(false)}
           />
-          {isLoading && (
-            <div className="bg-shade-200 aspect-square animate-pulse"></div>)}
-        </Link>} */}
+        </Link>}
       <div>
         <p className="pt-2 font-bold text-left text-md sm:text-lg text-shade-600">{profile?.data?.displayName}</p>
         <div className="flex items-center justify-between">
