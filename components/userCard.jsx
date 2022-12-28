@@ -1,54 +1,65 @@
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState, Suspense } from 'react'
 import Image from 'next/image';
-// import { getDoc, doc } from 'firebase/firestore';
-// import { fireDb } from '../firebaseClient';
-import { AiFillStar } from "react-icons/ai";
-
-// import RatingBar from './ratingBar';
+import { BsStarFill, BsCheck } from "react-icons/bs";
+import { AuthContext } from '../src/hook/auth';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const styles = {
-  userCard: "rounded-xl shadow-lg bg-white mx-4 mb-10 overflow-hidden",
+  userCard: "rounded-xl border-white cursor-pointer border-8 shadow-lg bg-white overflow-hidden hover:shadow-2xl",
 }
+
 
 const UserCard = ({ profile }) => {
 
-  // const [profileData, setProfileData] = useState(null)
+  const { user } = useContext(AuthContext)
+  const [isLoading, setIsLoading] = useState(true);
 
-  // useEffect(() => {
-  //   const getProfileData = async () => {
-  //     console.log(
-  //       (await getDoc(doc(fireDb, "profiles", profile.data.username))).data(), ":DATA YO")
+  const userStatus = profile.data?.state
+  console.log("OFFLINE?", userStatus)
 
-  //     setProfileData(
-  //       (await getDoc(doc(fireDb, "profiles", profile.data.username))).data()
-  //     )
-  //   }
-
-  //   getProfileData()
-  // }, [profile])
+  const LoadingFallback = () => {
+    <div className="bg-shade-200 aspect-square animate-pulse"></div>
+  }
 
   return (
-    <div className={styles.userCard}>
-      <Link href={`/userProfile/${profile.id}`}>
-        <Image
-          src={profile.data.userProfileUrl}
-          height={100}
-          width={100}
-          alt="profileImg"
-          className="h-auto w-full aspect-square mx-auto hover:opacity-90"
-        />
-      </Link>
-      <div className="pb-4">
-        <p className="pt-4 text-xl sm:text-2xl lg:text-3xl">{profile.data.displayName}</p>
-        {/* SHOW TIMESTAMP */}
-        {/* <p>{new Date(profile.data.postedOn).toLocaleString("de-DE", {
-                  day: "numeric",
-                  month: "short",
-                })}</p> */}
-        <div className="flex items-center justify-center">
-          <span className="text-fantsy-orange-500"><AiFillStar size={25} /></span>
-          <p>{profile.data.likesCount}</p>
+    <div className={styles.userCard} key={profile.id}>
+    <BsCheck className={userStatus === "online" ? "bg-fantsy-green-500 w-8 h-8 text-white rounded-full absolute" : "hidden"} />
+
+      {user ?
+        <Link href={`/profile/${profile.id}`}>
+          <Image
+            src={profile?.data?.userProfileUrl}
+            height={100}
+            width={100}
+            alt="profileImg"
+            placeholder={LoadingFallback}
+            className="h-auto w-full aspect-square mx-auto"
+          />
+        </Link>
+        :
+        <Link href="/not-authenticated">
+          <Image
+            src={profile.data.userProfileUrl}
+            height={100}
+            width={100}
+            alt="profileImg"
+            placeholder={LoadingFallback}
+            className="h-auto w-full aspect-square mx-auto"
+          />
+        </Link>}
+      <div>
+        <p className="pt-2 font-bold text-left text-md sm:text-lg text-shade-600">{profile?.data?.displayName}</p>
+        <div className="flex items-center justify-between">
+          <div className="flex">
+            {profile?.data?.likesCount === 0 ?
+              <BsStarFill className="text-shade-200 mr-1" size={25} /> :
+              <BsStarFill className="text-fantsy-orange-500 mr-1" size={25} />}
+            <p>{profile?.data?.likesCount}</p>
+          </div>
+          <div>
+            <p>{profile?.data?.userCity}</p>
+          </div>
         </div>
       </div>
     </div>

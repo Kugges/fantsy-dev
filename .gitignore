@@ -6,7 +6,7 @@
 .pnp.js
 secrets.json
 database.rules.json
-.env2
+.env
 
 # testing
 /coverage

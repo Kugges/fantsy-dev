@@ -5,8 +5,8 @@ import logo from '../images/peach-logo.png'
 
 const Footer = () => {
     return (
-        <div className="relative">
-            <div className="text-black bg-fantsy-orange-300 grid gap-2 grid-cols-1 grid-rows-1 sm:grid-cols-4 sm:gap-40 text-center p-10 items-center justify-center">
+        <div className="">
+            {/* <div className="text-black bg-white grid gap-2 grid-cols-1 grid-rows-1 sm:grid-cols-4 sm:gap-40 text-center p-10 items-center justify-center">
                 <div className="">
                     <h4 className="text-xl mb-5 font-bold">Partner</h4>
                     <ul className="cursor-pointer">
@@ -70,9 +70,9 @@ const Footer = () => {
 
                 </div>
 
-            </div>
+            </div> */}
             
-        <div className="p-10 bg-fantsy-orange-400 text-center justify-center">
+        <div className="px-10 py-4 bg-fantsy-orange-500 text-center justify-center">
             <p>© Copyright 2022 Fantsy. All Rights Reserved.</p>
         </div>
         </div>
