@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState, useRef } from 'react'
 import { AiOutlineClose, AiOutlineSend, AiFillMessage, AiOutlineCaretRight, AiOutlineCaretLeft } from 'react-icons/ai'
 import { BiChevronRight, BiChevronLeft } from "react-icons/bi"
-import { BsChatDots, BsFillCaretRightFill, BsFillCaretLeftFill  } from "react-icons/bs"
+import { BsChatDots, BsFillCaretRightFill, BsFillCaretLeftFill } from "react-icons/bs"
 import { useCollection, useCollectionData } from "react-firebase-hooks/firestore"
 import { fireDb } from '../../firebaseClient'
-import { addDoc, collection, getDocs, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
+import { addDoc, collection, deleteDoc, getDoc, doc, getDocs, orderBy, query, serverTimestamp, updateDoc, where } from 'firebase/firestore'
 import { AuthContext } from '../../src/hook/auth'
 import getOtherEmail from '../../utils/getOtherEmail'
 import ChatCard from '../../components/chatCard'
@@ -23,13 +23,71 @@ export default function Chat() {
     const { user } = useContext(AuthContext);
     const [snapshot, loading, error] = useCollection(collection(fireDb, "chats"));
     const chats = snapshot?.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-    const chatExists = email => chats?.find(chat => (chat.users.includes(user.email) && chat.users.includes(email)));
+    // const chatExists = email => chats?.find(chat => (chat.users.includes(user.email) && chat.users.includes(email)));
 
-    const startChat = async () => {
-        const input = prompt("Enter Email of chat recipient");
-        if (!chatExists(input) && (input != user.email)) {
-            await addDoc(collection(fireDb, "chats"), { users: [user.email, input] })
+    // const startChat = async () => {
+    //     const input = prompt("Enter Email of chat recipient");
+    //     if (!chatExists(input) && (input != user.email)) {
+    //         await addDoc(collection(fireDb, "chats"), { users: [user.email, input] })
+    //     }
+    // }
+
+    const ChatRequest = ({ chat }) => {
+
+        // GET THE OTHER USERS EMAIL AND THEN THEIR PROFILE DOC
+        const otherUser = getOtherEmail(chat.users, user);
+        const [otherProfile, setOtherProfile] = useState([])
+        useEffect(() => {
+            const getOtherProfile = async () => {
+                const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where("email", "==", otherUser)))
+                // console.log(querySnapshot, "WUPPINGER")
+                setOtherProfile(querySnapshot.docs?.map(doc => {
+                    return {
+                        id: doc.id,
+                        data: {
+                            ...doc.data()
+                        }
+                    }
+                })[0])
+            }
+            getOtherProfile()
+        }, [])
+
+        const acceptChatRequest = async () => {
+            const asd = chat.id;
+            await updateDoc(doc(fireDb, "chats", asd), {
+                pending: false,
+            })
         }
+
+        const declineChatRequest = async () => {
+            const asd = chat.id;
+            await deleteDoc(doc(fireDb, "chats", asd))
+        }
+
+        return (
+            <li className="hover:bg-shade-50 px-3 py-3 border-b border-shade-100 cursor-pointer flex items-center">
+                <div className="rounded-full overflow-hidden w-10 h-10">
+                    <Image
+                        src={otherProfile?.data?.userProfileUrl}
+                        alt="profile image"
+                        width={70}
+                        height={70}
+                        priority="eager"
+                    />
+                </div>
+                <div className="ml-3 text-xs font-bold">
+                    {otherProfile?.data?.displayName}<p className="font-normal">möchte chatten!</p>
+                </div>
+                <button className="p-1 bg-green" onClick={acceptChatRequest}>
+                    accept
+                </button>
+                <button className="p-1 bg-red" onClick={declineChatRequest}>
+                    decline
+                </button>
+
+            </li>
+        )
     }
 
     const ChatName = ({ chat }) => {
@@ -64,8 +122,7 @@ export default function Chat() {
         }, [])
 
         return (
-            <li onClick={handleClick} className="hover:bg-shade-50 px-3 py-3 cursor-pointer flex items-center">
-                <div className={otherProfile?.data?.state === "online" ? "rounded-full bg-fantsy-green-500 w-3 h-3 mr-3 border-white border" : "hidden"}></div>
+            <li onClick={handleClick} className="hover:bg-shade-50 px-3 py-3 border-b border-shade-100 cursor-pointer flex items-center">
                 <div className="rounded-full overflow-hidden w-10 h-10">
                     <Image
                         src={otherProfile?.data?.userProfileUrl}
@@ -75,6 +132,7 @@ export default function Chat() {
                         priority="eager"
                     />
                 </div>
+                <div className={otherProfile?.data?.state === "online" ? "rounded-full bg-fantsy-green-500 w-3 h-3 -ml-3 -mb-7 border-white border-2" : "hidden"}></div>
                 <div className="ml-3 text-sm font-bold">
                     {otherProfile?.data?.displayName}
                 </div>
@@ -99,7 +157,7 @@ export default function Chat() {
                         })}
                 </div>
                 <div className={styles.sidebarBtnRow}>
-                    <BsChatDots size={35} onClick={() => startChat()} className={styles.sidebarBtn} />
+                    {/* <BsChatDots size={35} onClick={() => startChat()} className={styles.sidebarBtn} /> */}
                     <BsFillCaretLeftFill size={35} onClick={sidebarNav} className={sidebar ? styles.sidebarBtn : "hidden"} />
                     <BsFillCaretRightFill size={35} onClick={sidebarNav} className={!sidebar ? styles.sidebarBtn : "hidden"} />
                 </div>
@@ -110,7 +168,15 @@ export default function Chat() {
                     <ul className="bg-white w-full h-full shadow-lg overflow-hidden overflow-y-scroll scrollbar-hide">
                         {chats?.filter(chat => chat.users.includes(user.email))
                             .map(chat => {
-                                return <ChatName chat={chat} key={chat.id} />
+                                if (chat.pending !== true) {
+                                    return <ChatName chat={chat} key={chat.id} />
+                                } else {
+                                    if (chat.initiator !== user.email) {
+                                        return <ChatRequest chat={chat} key={chat.id} />
+                                    } else {
+                                        return <div className="bg-red p-2">Still pending</div>
+                                    }
+                                }
                             })}
                     </ul>
                 </div>

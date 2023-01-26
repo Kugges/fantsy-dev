@@ -75,6 +75,9 @@ const Photo = () => {
                     </div>
                     <div className={styles.dot}>
                         <div>3</div>
+                    </div>                    
+                    <div className={styles.dot}>
+                        <div>4</div>
                     </div>
                 </div>
                 <div>

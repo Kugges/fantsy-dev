@@ -48,6 +48,7 @@ function UserList() {
 
 
     // FILTER CHECKED
+    const [checkedOnline, setCheckedOnline] = useState(false);
     const [checkedMale, setCheckedMale] = useState(false);
     const [checkedFemale, setCheckedFemale] = useState(false);
     const [checkedTrans, setCheckedTrans] = useState(false);
@@ -55,15 +56,25 @@ function UserList() {
 
 
     const [filters, setFilter] = useState({
+        online: true,
         male: true,
         female: true,
         trans: true
     })
 
-
+    // const handleCheckedOnline = () => {
+    //     setCheckedOnline(!checkedOnline);
+    //     setFilter({
+    //         online: !checkedOnline,
+    //         male: checkedMale,
+    //         female: checkedFemale,
+    //         trans: checkedTrans
+    //     })
+    // };
     const handleCheckedMale = () => {
         setCheckedMale(!checkedMale);
         setFilter({
+            online: checkedOnline,
             male: !checkedMale,
             female: checkedFemale,
             trans: checkedTrans
@@ -72,6 +83,7 @@ function UserList() {
     const handleCheckedFemale = () => {
         setCheckedFemale(!checkedFemale);
         setFilter({
+            online: checkedOnline,
             male: checkedMale,
             female: !checkedFemale,
             trans: checkedTrans
@@ -80,6 +92,7 @@ function UserList() {
     const handleCheckedTrans = () => {
         setCheckedTrans(!checkedTrans);
         setFilter({
+            online: checkedOnline,
             male: checkedMale,
             female: checkedFemale,
             trans: !checkedTrans
@@ -87,20 +100,24 @@ function UserList() {
     };
 
     let filteredProfiles = workerProfiles;
+    if (!filters.online) {
+        filteredProfiles = filteredProfiles.filter(profile => profile.data.state !== "online")
+        // console.log("ONLINE USERS", filteredProfiles)
+    }
     if (!filters.male) {
         filteredProfiles = filteredProfiles.filter(profile => profile.data.userGender !== "Männlich")
-        console.log("MÄNNER" ,filteredProfiles)
+        // console.log("MÄNNER", filteredProfiles)
     }
     if (!filters.female) {
         filteredProfiles = filteredProfiles.filter(profile => profile.data.userGender !== "Weiblich")
-        console.log("FRAUEN" ,filteredProfiles)
+        // console.log("FRAUEN", filteredProfiles)
     }
     if (!filters.trans) {
         filteredProfiles = filteredProfiles.filter(profile => profile.data.userGender !== "Divers")
-        console.log("TRANSEN" ,filteredProfiles)
+        // console.log("TRANSEN", filteredProfiles)
     }
 
-    if (!filters.trans && !filters.female && !filters.male) {
+    if (!filters.online && !filters.trans && !filters.female && !filters.male) {
         filteredProfiles = workerProfiles
     }
 
@@ -125,7 +142,7 @@ function UserList() {
 
 
     return (
-        <div className="sm:w-4/5 mx-auto">
+        <div className="w-full lg:w-4/5 mx-auto">
             {/*Overlay*/}
             <div className="grid grid-cols-6">
                 <div className="col-span-1 mr-5 hidden sm:block">
@@ -140,6 +157,15 @@ function UserList() {
                                 </button>
                             </div>
                             <div id="checkIdentity" className={checkedIdentity ? "block" : "hidden"}>
+                            {/* <div className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        className={styles.checkmark}
+                                        checked={checkedOnline}
+                                        onChange={handleCheckedOnline}
+                                    />
+                                    <label>Gerade Online</label>
+                                </div> */}
                                 <div className="flex items-center">
                                     <input
                                         type="checkbox"

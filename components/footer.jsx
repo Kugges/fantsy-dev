@@ -73,7 +73,7 @@ const Footer = () => {
             </div> */}
             
         <div className="px-10 py-4 bg-fantsy-orange-500 text-center justify-center">
-            <p>© Copyright 2022 Fantsy. All Rights Reserved.</p>
+            <p>© Copyright 2023 Fantsy. All Rights Reserved.</p>
         </div>
         </div>
         

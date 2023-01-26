@@ -22,6 +22,7 @@ const WorkerAccountDetails = () => {
 
     // GET LOGGED-IN-USER ID
     const { user } = useContext(AuthContext)
+    const userId = user?.uid
 
     // GET ROUTER
     const router = useRouter();
@@ -46,7 +47,7 @@ const WorkerAccountDetails = () => {
                 firebase
                     .firestore()
                     .collection("profiles")
-                    .doc(user.uid)
+                    .doc(userId)
                     .update({
                         location: new GeoPoint(position.coords.latitude, position.coords.longitude)
                     })
@@ -75,7 +76,7 @@ const WorkerAccountDetails = () => {
         // UPDATE PROFILE DOC
         await updateDoc(doc(fireDb, "profiles", user.uid), profileData)
             .then(() => {
-                router.push("/");
+                router.push("/join/details");
             }).catch(function (error) {
                 const message = error.message;
                 console.log(error.message);
@@ -95,6 +96,9 @@ const WorkerAccountDetails = () => {
                     </div>
                     <div className={styles.dot}>
                         <div>3</div>
+                    </div>                    
+                    <div className={styles.dot}>
+                        <div>4</div>
                     </div>
                 </div>
             </div>

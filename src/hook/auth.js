@@ -3,7 +3,9 @@ import nookies from "nookies"
 
 import firebase from "firebase/compat/app"
 import "firebase/compat/auth"
-import { realDb } from "../../firebaseClient"
+import "firebase/compat/firestore"
+import { realDb, fireDb } from "../../firebaseClient"
+import { doc } from "firebase/firestore"
 
 
 const AuthContext = createContext();
@@ -44,6 +46,7 @@ const AuthProvider = ({ children }) => {
             // });
 
             // SYNC WITH FIRESTORE DB
+            // var userStatusFirestoreRef = doc(fireDb, "/profiles/" + user.uid)
             var userStatusFirestoreRef = firebase.firestore().doc("/profiles/" + user.uid)
             console.log("SCHNABBES", userStatusFirestoreRef)
 

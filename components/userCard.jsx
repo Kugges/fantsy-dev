@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState, Suspense } from 'react'
 import Image from 'next/image';
 import { BsStarFill, BsCheck } from "react-icons/bs";
 import { AuthContext } from '../src/hook/auth';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+// import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const styles = {
   userCard: "rounded-xl border-white cursor-pointer border-8 shadow-lg bg-white overflow-hidden hover:shadow-2xl",
@@ -16,7 +16,7 @@ const UserCard = ({ profile }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   const userStatus = profile.data?.state
-  console.log("OFFLINE?", userStatus)
+  // console.log("OFFLINE?", profile?.data?.displayName, userStatus)
 
   const LoadingFallback = () => {
     <div className="bg-shade-200 aspect-square animate-pulse"></div>
@@ -24,7 +24,6 @@ const UserCard = ({ profile }) => {
 
   return (
     <div className={styles.userCard} key={profile.id}>
-    <BsCheck className={userStatus === "online" ? "bg-fantsy-green-500 w-8 h-8 text-white rounded-full absolute" : "hidden"} />
 
       {user ?
         <Link href={`/profile/${profile.id}`}>
@@ -34,6 +33,7 @@ const UserCard = ({ profile }) => {
             width={100}
             alt="profileImg"
             placeholder={LoadingFallback}
+            quality={100}
             className="h-auto w-full aspect-square mx-auto"
           />
         </Link>
@@ -49,7 +49,11 @@ const UserCard = ({ profile }) => {
           />
         </Link>}
       <div>
-        <p className="pt-2 font-bold text-left text-md sm:text-lg text-shade-600">{profile?.data?.displayName}</p>
+        <div className="flex items-center pt-2">
+          <p className="font-bold text-left text-md sm:text-lg mr-2 text-shade-600">{profile?.data?.displayName}</p>
+          <div className={userStatus === "online" ? "bg-fantsy-green-500 w-3 h-3 rounded-full block" : "hidden"}>
+          </div>
+        </div>
         <div className="flex items-center justify-between">
           <div className="flex">
             {profile?.data?.likesCount === 0 ?

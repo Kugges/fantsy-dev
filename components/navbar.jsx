@@ -7,14 +7,9 @@ import firebase from "firebase/compat/app"
 
 import Image from 'next/image'
 import logo from '../images/peach-logo.png'
-import { collection, doc, getDoc } from 'firebase/firestore'
-import { fireDb } from '../firebaseClient'
-import { useCollection, useDocument, useDocumentData } from 'react-firebase-hooks/firestore'
 import Modal from "../components/modal"
 import Login from '../pages/login'
 import { FantsyContext } from '../src/hook/FantsyContext'
-import { createCheckoutSession } from '../stripe/createCheckoutSession'
-import usePremiumStatus from '../stripe/usePremiumStatus'
 
 const styles = {
 
@@ -40,7 +35,7 @@ const Navbar = () => {
     const { profiles } = useContext(FantsyContext)
 
     // CHECK IF USER IS STRIPE PREMIUM
-    const userIsPremium = usePremiumStatus(user)
+    // const userIsPremium = usePremiumStatus(user)
 
     // const [snapshot, loading, error] = useCollection(collection(fireDb, "profiles"));
     // const profiles = snapshot?.docs.map(doc => ({ id: doc.id, ...doc.data() }));
@@ -114,11 +109,11 @@ const Navbar = () => {
                     onClick={handleInnerNav}
                     className={styles.dropdownButton}>
                     <AiOutlineUser size={20} className="mr-2" /><span>
-                        Mein Account</span>
+                    {profile.data.displayName}</span>
                 </button>
                 <ul className={innerNav ? styles.dropdownMenu : "hidden absolute text-center ease-in duration-100"}>
                     <li className="px-10 py-2">Eingeloggt als <br></br>
-                        <span className="text-xs">{profile.data.displayName}</span>
+                        <span className="text-xs">{profile.data.email}</span>
                     </li>
                     <hr className="text-fantsy-orange-700"></hr>
                     <li className={styles.menuLi} onClick={handleInnerNav}>
@@ -127,14 +122,14 @@ const Navbar = () => {
                     <li className={styles.menuLi} onClick={handleInnerNav}>
                         <Link href="/dashboard/account">Account</Link>
                     </li>
-                    {!userIsPremium ? (
+                    {/* {!userIsPremium ? (
 
                         <li className={styles.menuLi} onClick={() => createCheckoutSession(user.uid)}>
                             <p>Upgrade to premium!</p>
                         </li>
                     ) : (
                         <h2>COOKIE</h2>
-                    )}
+                    )} */}
                     <li className={styles.menuLi}>
                         <button
                             onClick={async () => {
@@ -152,7 +147,7 @@ const Navbar = () => {
     return (
         <>
             <div className="fixed left-0 h-16 py-1 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
-                <p className="absolute z-50">v0.6.0</p>
+                <p className="absolute z-50">v0.7.7</p>
                 <div className="w-11/12 sm:max-w-[1240px] m-auto flex justify-between items-center text-black">
                     <Link href="/">
                         <Image
