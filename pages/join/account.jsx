@@ -8,6 +8,10 @@ import { useRouter } from 'next/router'
 import { useForm } from 'react-hook-form'
 import firebase from "firebase/compat/app"
 import { GeoPoint } from 'firebase/firestore'
+import * as geofire from 'geofire-common';
+import starterImg from "../../images/profile-starter.png"
+import galleryPlaceholder from "../../images/gallery-placeholder.png"
+
 
 
 const styles = {
@@ -37,26 +41,67 @@ const WorkerAccountDetails = () => {
     const [city, setCity] = useState("");
     const [country, setCountry] = useState("");
     const [workertype, setWorkerType] = useState(false);
+    const [url, setURL] = useState(starterImg)
+    const [placeholderUrl, setPlaceholderUrl] = useState(galleryPlaceholder)
 
     const { register, handleSubmit, formState: { errors }, submitting } = useForm();
 
     // GET USERS GEO LOCATION
-    useEffect(() => {
-        const getUsersLocation = async () => {
-            navigator.geolocation.getCurrentPosition(position => {
-                firebase
-                    .firestore()
-                    .collection("profiles")
-                    .doc(userId)
-                    .update({
-                        location: new GeoPoint(position.coords.latitude, position.coords.longitude)
-                    })
-            })
-            console.log("geolocation updated!")
+    // useEffect(() => {
+    //     const getUsersLocation = async () => {
+    //         navigator.geolocation.getCurrentPosition(position => {
+    //             const geoHash = geofire.geohashForLocation([position.coords.latitude, position.coords.longitude])
+    //             firebase
+    //                 .firestore()
+    //                 .collection("profiles")
+    //                 .doc(userId)
+    //                 .update({
+    //                     location: new GeoPoint(position.coords.latitude, position.coords.longitude),
+    //                     geohash: geoHash
+    //                 })
+    //                 console.log("geolocation updated! this is your geohash:", geoHash)
+    //         })
 
-        }
-        getUsersLocation()
-    }, [])
+    //     }
+    //     getUsersLocation()
+    // }, [])
+
+    // GET USERS GEO LOCATION
+    const [location, setLocation] = useState(null);
+    useEffect(() => {
+        const getLocation = () => {
+            if (navigator.geolocation) {
+                navigator.geolocation.watchPosition(async (position) => {
+                    const { latitude, longitude } = position.coords;
+                    const geohash = geofire.geohashForLocation([latitude, longitude]);
+                    const profileRef = firebase.firestore().collection("profiles").doc(userId);
+                    const batch = firebase.firestore().batch();
+
+                    batch.update(profileRef, {
+                        location: new firebase.firestore.GeoPoint(latitude, longitude),
+                        geohash: geohash
+                    });
+
+                    try {
+                        // Commit the batch
+                        await batch.commit();
+                        setLocation({ latitude, longitude });
+                        console.log("Document's Geopoint & Geohash updated!");
+                    } catch (error) {
+                        console.error("Error updating document: ", error);
+                    }
+                });
+            }
+        };
+
+        getLocation();
+    }, [userId]);
+
+    const maxDate = new Date();
+    maxDate.setFullYear(maxDate.getFullYear() - 18);
+
+    const minDate = new Date();
+    minDate.setFullYear(minDate.getFullYear() - 100);
 
 
     // CREATE PROFILE DOC & SAVE TO FIRESTORE
@@ -71,7 +116,11 @@ const WorkerAccountDetails = () => {
             userCity: city,
             userPostcode: postcode,
             userCountry: country,
-            workerProfile: workertype
+            workerProfile: workertype,
+            userImage1: placeholderUrl,
+            userImage2: placeholderUrl,
+            userImage3: placeholderUrl,
+            userImage4: placeholderUrl
         }
         // UPDATE PROFILE DOC
         await updateDoc(doc(fireDb, "profiles", user.uid), profileData)
@@ -96,10 +145,18 @@ const WorkerAccountDetails = () => {
                     </div>
                     <div className={styles.dot}>
                         <div>3</div>
-                    </div>                    
+                    </div>
                     <div className={styles.dot}>
                         <div>4</div>
                     </div>
+                </div>
+                <div>
+                    {location && (
+                        <div>
+                            Latitude: {location.latitude}
+                            Longitude: {location.longitude}
+                        </div>
+                    )}
                 </div>
             </div>
 
@@ -183,15 +240,21 @@ const WorkerAccountDetails = () => {
                         <input
                             className={styles.fantsyInput}
                             {...register('birthday', {
-                                required: true
+                                required: true,
+                                min: minDate.toISOString().split("T")[0],
+                                max: maxDate.toISOString().split("T")[0]
                             })}
                             type="date"
                             id="birthDay"
                             name="birthday"
                             onChange={(e) => setBirthday(e.target.value)}
+                            min={minDate.toISOString().split("T")[0]}
+                            max={maxDate.toISOString().split("T")[0]}
                             value={birthday}
                         />
                         {errors.birthday && <p className={styles.errormsg}>Geburtstag fehlt.</p>}
+                        {errors.birthday && errors.birthday.type === "min" && <p className={styles.errormsg}>Du musst mindestens 18 Jahre alt sein!</p>}
+                        {errors.birthday && errors.birthday.type === "max" && <p className={styles.errormsg}>Über 100 Jahre alt? I doubt it!</p>}
                     </div>
                     <div className="basis-1/2">
                         <label htmlFor="postcode">Postleitzahl *</label>

@@ -42,32 +42,40 @@ function MyApp({ Component, pageProps }) {
   // })
 
 
+  
+  // <>{isLoading ?
+  //   <Loader />
+  //   :
+  //   <>
+  //     <Navbar />
+  //     <Component {...pageProps} />
+  //     <Chat />
+  //     <Footer />
+  //   </>
+  // }</>
+
   return (
 
     <>
       <Head>
         <title>fantsy.net</title>
-            <meta charSet="UTF-8" name="description" content="Social Media for Sexworking" />
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
-          <ToastContainer />
-          <AuthProvider>
-            <FantsyProvider>
-              <>{isLoading ?
-                <Loader />
-                :
-                <>
-                  <Navbar />
-                  <Component {...pageProps} />
-                  <Chat />
-                  <Footer />
-                </>
-              }</>
-            </FantsyProvider>
-          </AuthProvider>
-        </>
-        )
+        <meta charSet="UTF-8" name="description" content="Social Media for Sexworking" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <ToastContainer />
+      <AuthProvider>
+        <FantsyProvider>
+          <>
+            <Navbar />
+            <Component {...pageProps} />
+            <Chat />
+            <Footer />
+          </>
+        </FantsyProvider>
+      </AuthProvider>
+    </>
+  )
 
 }
 
-        export default MyApp
+export default MyApp

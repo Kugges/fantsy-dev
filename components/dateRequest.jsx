@@ -10,6 +10,7 @@ const DateRequest = ({ profile, user }) => {
     const [date, setDate] = useState("");
     const [time, setTime] = useState("");
     const [dateLength, setDateLength] = useState("");
+    const [requestText, setRequestText] = useState("");
     const [userProfile, setUserProfile] = useState([]);
 
     const { register, handleSubmit, formState: { errors }, submitting } = useForm();
@@ -37,8 +38,16 @@ const DateRequest = ({ profile, user }) => {
     const dateRequest = async () => {
         await addDoc(collection(fireDb, "dates"), {
             daters: [userProfile?.data?.displayName, profile?.data?.displayName],
-            email: [userProfile?.data?.email, profile?.data?.email],
             userAvatars: [userProfile?.data?.userProfileUrl, profile?.data?.userProfileUrl],
+            email: [userProfile?.data?.email, profile?.data?.email],
+            initiatorDate: userProfile?.data?.email,
+            initiatorRating: 0,
+            initiatorComment: "",
+            receiverDate: profile?.data?.email,
+            receiverRating: 0,
+            receiverComment: "",
+            dateRequestText: requestText,
+            archived: false,
             datingDate: date,
             datingTime: time,
             datingLength: dateLength,
@@ -57,13 +66,13 @@ const DateRequest = ({ profile, user }) => {
             <div className="grid grid-cols-3 w-2/4 mt-10 mx-auto gap-4">
                 <div className="flex flex-col col-span-1 items-center my-6">
                     <Image
-                        src={profile?.data?.userProfileUrl}
+                        src={userProfile?.data?.userProfileUrl}
                         width={50}
                         height={50}
                         className="rounded-full aspect-square"
                         alt="Worker Image"
                     />
-                    <p className="text-md font-bold">{profile.data.displayName}</p>
+                    <p className="text-md font-bold">{userProfile?.data?.displayName}</p>
 
                 </div>
                 <div className="flex col-span-1 items-center mx-auto">
@@ -77,22 +86,22 @@ const DateRequest = ({ profile, user }) => {
                 </div>
                 <div className="flex flex-col col-span-1 items-center my-6">
                     <Image
-                        src={userProfile?.data?.userProfileUrl}
+                        src={profile?.data?.userProfileUrl}
                         width={50}
                         height={50}
                         className="rounded-full aspect-square"
                         alt="Worker Image"
                     />
-                    <p className="text-md font-bold">{userProfile?.data?.displayName}</p>
+                    <p className="text-md font-bold">{profile?.data?.displayName}</p>
 
                 </div>
             </div>
 
-            <form className="my-6" onSubmit={handleSubmit(dateRequest)}>
+            <form className="p-6" onSubmit={handleSubmit(dateRequest)}>
                 <h2 className="text-lg font-semibold">Wann?</h2>
-                <div className="flex flex-row gap-4">
+                <div className="grid grid-rows-2 gap-4">
                     <div className="flex items-center">
-                        <label htmlFor="date" >Datum</label>
+                        <label htmlFor="date" className="mr-2" >Datum</label>
                         <input
                             {...register('date', {
                                 required: true,
@@ -100,13 +109,12 @@ const DateRequest = ({ profile, user }) => {
                             id="date"
                             type="date"
                             placeholder="Datum"
-                            className="ml-4 px-4 py-2 rounded-lg w-full bg-shade-50"
-                            required
+                            className="p-2 rounded-lg w-full bg-shade-50"
                             onChange={(e) => setDate(e.target.value)}
                             value={date} />
                     </div>
                     <div className="flex items-center">
-                        <label htmlFor="date" >Uhrzeit</label>
+                        <label htmlFor="date" className="mr-2" >Uhrzeit</label>
                         <select
                             {...register('time', {
                                 required: true,
@@ -114,7 +122,7 @@ const DateRequest = ({ profile, user }) => {
                             id="date"
                             type="date"
                             placeholder="Datum"
-                            className="ml-4 px-4 py-2 rounded-lg w-full bg-shade-50"
+                            className="p-2 rounded-lg w-full bg-shade-50"
                             required
                             onChange={(e) => setTime(e.target.value)}
                             value={time}>
@@ -172,15 +180,16 @@ const DateRequest = ({ profile, user }) => {
                 </div>
                 <div className="my-6">
                     <h2 className="text-lg font-semibold">Wie lange?</h2>
-                    <div className="flex flex-col items-center justify-between">
-                        <div className="flex flex-row w-1/4 items-center justify-between">
+                    <div className="flex flex-col">
+                        <div className="">
                             <select
                                 {...register('dateLength', {
                                     required: true,
                                 })}
+                                className="p-2 rounded-lg w-full bg-shade-50"
                                 onChange={(e) => setDateLength(e.target.value)}
-                                name="workerPrices">
-                                    <option>Bitte wählen</option>
+                                name="dateLength">
+                                <option>Bitte wählen</option>
                                 {Object.entries(workerPrices).map(([priceName, priceValue], index) => (
                                     <option key={index} value={priceName}>
                                         {priceName} - {priceValue} €
@@ -191,9 +200,21 @@ const DateRequest = ({ profile, user }) => {
                         </div>
                     </div>
                 </div>
+                <div className="my-6">
+                    <h2 className="text-lg font-semibold">Schreibe etwas nettes!</h2>
+                    <div className="flex flex-col items-center justify-between">
+                        <textarea
+                            {...register('requestText', {
+                                required: true,
+                            })}
+                            className="px-4 py-2 rounded-lg w-full bg-shade-50"
+                            onChange={(e) => setRequestText(e.target.value)}
+                            name="requestText"
+                            value={requestText}/>
+                    </div>
+                </div>
                 <div className="flex flex-row gap-4 items-center justify-end">
-                    <button className="p-2 rounded-lg hover:bg-shade-50">Abbrechen</button>
-                    <input type="submit" className="p-2 rounded-lg bg-fantsy-green-400 text-white hover:bg-fantsy-green-500" />
+                    <input type="submit" className="p-2 rounded-lg cursor-pointer bg-fantsy-green-400 text-white hover:bg-fantsy-green-500" />
                 </div>
             </form>
 

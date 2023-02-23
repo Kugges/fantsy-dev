@@ -51,7 +51,6 @@ export default function Register() {
           createdAt: serverTimestamp(),
           email: user.email
         }
-        setDoc(doc(fireDb, "users", user.uid), userData);
         setDoc(doc(fireDb, "profiles", user.uid), {
           email: user.email,
           displayName: userName,
@@ -61,6 +60,7 @@ export default function Register() {
           userProfileUrl: url
 
         });
+        setDoc(doc(fireDb, "users", user.uid), userData);
       })
       .then(() => {
         router.push("/join/photo");

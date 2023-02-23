@@ -25,9 +25,9 @@ const Photo = () => {
     const router = useRouter();
 
     // GET FILE & URL FROM STORAGE
-    const [file, setFile] = useState(null)
-    const [url, setURL] = useState(starterImg)
-    const [step, setStep ] = useState(false)
+    const [file, setFile] = useState(null);
+    const [url, setURL] = useState(starterImg);
+    const [step, setStep] = useState(false);
 
     // UPLOAD IMAGE TO PROFILE
     const updateProfilePic = async event => {
@@ -75,7 +75,7 @@ const Photo = () => {
                     </div>
                     <div className={styles.dot}>
                         <div>3</div>
-                    </div>                    
+                    </div>
                     <div className={styles.dot}>
                         <div>4</div>
                     </div>

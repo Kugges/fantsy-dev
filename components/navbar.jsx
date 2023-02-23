@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from 'react'
-import { AiOutlineMenu, AiOutlineClose, AiOutlineUser } from 'react-icons/ai'
+import { AiOutlineMenu, AiOutlineClose, AiOutlineUser, AiFillCaretDown } from 'react-icons/ai'
 import { AuthContext } from "../src/hook/auth"
 import Link from 'next/link'
 
@@ -105,11 +105,17 @@ const Navbar = () => {
         return (
 
             <>
-                <button
-                    onClick={handleInnerNav}
-                    className={styles.dropdownButton}>
-                    <AiOutlineUser size={20} className="mr-2" /><span>
-                    {profile.data.displayName}</span>
+                <button onClick={handleInnerNav} className={styles.dropdownButton}>
+                    <Image
+                    className="rounded-full border border-fantsy-orange-600"
+                        src={profile.data.userProfileUrl}
+                        width={30}
+                        height={30}
+                        alt="user Image"
+                        priority
+                    />
+                    <span className="mx-2">{profile.data.displayName}</span>
+                    <AiFillCaretDown size={20}/>
                 </button>
                 <ul className={innerNav ? styles.dropdownMenu : "hidden absolute text-center ease-in duration-100"}>
                     <li className="px-10 py-2">Eingeloggt als <br></br>
@@ -146,8 +152,8 @@ const Navbar = () => {
 
     return (
         <>
-            <div className="fixed left-0 h-16 py-1 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
-                <p className="absolute z-50">v0.7.7</p>
+            <div className="fixed left-0 h-16 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
+                <p className="absolute z-50">v0.8.5</p>
                 <div className="w-11/12 sm:max-w-[1240px] m-auto flex justify-between items-center text-black">
                     <Link href="/">
                         <Image
@@ -164,6 +170,12 @@ const Navbar = () => {
                         <li className="p-4 hover:text-white">
                             <Link href="/">Fantsys</Link>
                         </li>
+                        {user ?
+                            <li className="p-4 hover:text-white">
+                                <Link href="/mydates">Meine Dates</Link>
+                            </li>
+                            :
+                            <></>}
                         <li className="p-4">
                             {user ? <>
                                 {profiles?.filter(profile => profile.id.includes(user.uid))
@@ -201,7 +213,7 @@ const Navbar = () => {
                             </li>
                             <li className="p-4">
                                 {user ? <>
-                                {profiles?.filter(profile => profile.id.includes(user.uid))
+                                    {profiles?.filter(profile => profile.id.includes(user.uid))
                                         .map(profile => {
                                             return <UserDropDownMobile profile={profile} key={profile.id} />
                                         })}</>

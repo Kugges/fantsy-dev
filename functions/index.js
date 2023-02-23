@@ -37,6 +37,25 @@ exports.onUserStatusChanged = functions.database.ref("/status/{uid}").onUpdate(
       return userStatusFirestoreRef.update(evStatus);
     },
 );
+
+exports.updateDocument = functions.firestore
+    .document("dates/{dateId}")
+    .onUpdate((change, context) => {
+      const date = change.after.data().datingDate;
+      const pending = change.after.data().pending;
+      const dayAfter = new Date(date);
+      dayAfter.setDate(dayAfter.getDate() + 1);
+
+      const currentDate = new Date();
+      if (currentDate >= dayAfter && pending === false) {
+        return fire.collection("dates").doc(context.params.dateId)
+            .update({
+              archived: true,
+            });
+      }
+      return null;
+    });
+
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //

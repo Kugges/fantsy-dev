@@ -117,14 +117,21 @@ const Details = () => {
                             <label className="flex" htmlFor="bodysize">Körpergröße in cm</label>
                             <input
                                 {...register('bodysize', {
-                                    required: true
+                                    required: true,
+                                    min: 90,
+                                    max: 230
                                 })}
                                 className={styles.fantsyInput}
                                 type="number"
                                 id="bodysize"
                                 name="bodysize"
+                                min="90"
+                                max="230"
                                 required
                                 onChange={(e) => setBodysize(e.target.value)} value={bodysize} />
+                                {errors.bodysize && <p className={styles.errormsg}>Körpergröße fehlt.</p>}
+                                {errors.bodysize && errors.bodysize.type === "min" && <p className={styles.errormsg}>So klein kannst du nicht sein!</p>}
+                                {errors.bodysize && errors.bodysize.type === "max" && <p className={styles.errormsg}>So groß willst du sein?</p>}
                         </div>
                     </div>
                     <div className={styles.formRow}>
@@ -132,14 +139,21 @@ const Details = () => {
                             <label className="flex" htmlFor="bodyweight">Körpergewicht in kg</label>
                             <input
                                 {...register('bodyweight', {
-                                    required: true
+                                    required: true,
+                                    min: 50,
+                                    max: 130
                                 })}
                                 className={styles.fantsyInput}
                                 type="number"
                                 id="gender"
                                 name="bodyweight"
+                                min="50"
+                                max="130"
                                 required
                                 onChange={(e) => setBodyweight(e.target.value)} value={bodyweight} />
+                                {errors.bodyweight && <p className={styles.errormsg}>Körpergewicht fehlt.</p>}
+                                {errors.bodyweight && errors.bodyweight.type === "min" && <p className={styles.errormsg}>Du wiegst zu wenig.</p>}
+                                {errors.bodyweight && errors.bodyweight.type === "max" && <p className={styles.errormsg}>Du wiegst zu viel.</p>}
                         </div>
                         <div className="basis-1/2">
                             <label className="flex" htmlFor="origin">Herkunft</label>

@@ -158,8 +158,7 @@ export default function Chat() {
                 </div>
                 <div className={styles.sidebarBtnRow}>
                     {/* <BsChatDots size={35} onClick={() => startChat()} className={styles.sidebarBtn} /> */}
-                    <BsFillCaretLeftFill size={35} onClick={sidebarNav} className={sidebar ? styles.sidebarBtn : "hidden"} />
-                    <BsFillCaretRightFill size={35} onClick={sidebarNav} className={!sidebar ? styles.sidebarBtn : "hidden"} />
+                    <BsChatDots size={35} onClick={sidebarNav} className={styles.sidebarBtn} />
                 </div>
                 <div className={!sidebar ? "fixed top-0 right-[-100%] h-screen w-52 z-30 ease-in duration-300" : "fixed top-0 right-0 h-screen w-52 z-30 ease-in duration-300"}>
                     <div className="bg-white bg-opacity-20 h-16 py-1 px-5 flex items-center justify-between text-bold">
