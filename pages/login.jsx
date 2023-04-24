@@ -8,6 +8,10 @@ import Link from 'next/link'
 import { AuthContext } from '../src/hook/auth'
 
 
+const styles = {
+    fantsyInput: "focus:outline-fantsy-orange-500 hover:outline-fantsy-orange-200 px-2 py-1 w-full bg-shade-50 rounded-lg",
+}
+
 export default function Login() {
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
@@ -64,12 +68,12 @@ export default function Login() {
         <div className="h-full w-3/4 mx-auto">
             <h1 className="text-4xl text-center font-bold mt-5">Login</h1>
             <div className="my-5">
-                <label className="flex" htmlFor="email">Email</label>
-                <input className="w-full bg-shade-50" type="email" id="emailAdress" name="email" required onChange={(e) => setEmail(e.target.value)} value={email} />
+                <label className="flex" htmlFor="email">Email</label>                
+                <input className={styles.fantsyInput} type="email" id="emailAdress" name="email" required onChange={(e) => setEmail(e.target.value)} value={email} />
             </div>
             <div className="my-5">
                 <label className="flex" htmlFor="password">Passwort</label>
-                <input className="w-full bg-shade-50" type="password" id="pass" name="password" required onChange={(e) => setPass(e.target.value)} value={pass} />
+                <input className={styles.fantsyInput} type="password" id="pass" name="password" required onChange={(e) => setPass(e.target.value)} value={pass} />
             </div>
             <div className="my-5">
                 <p onClick={handleNav} className="mt-5 cursor-pointer hover:text-fantsy-blue-500 underline-offset-auto">Passwort vergessen?</p>
@@ -77,7 +81,7 @@ export default function Login() {
             {reset ?
                 <div className="my-5">
                     <label className="flex" htmlFor="resetemail">Email für Passwort Zurücksetzung</label>
-                    <input className="w-full bg-shade-50" type="email" id="resetEmail" name="resetemail" required onChange={(e) => setResetEmail(e.target.value)} value={resetEmail} />
+                    <input className={styles.fantsyInput} type="email" id="resetEmail" name="resetemail" required onChange={(e) => setResetEmail(e.target.value)} value={resetEmail} />
                     {show ? <p className="text-fantsy-green-500">Email versendet! Überprüfe dein Email-Fach</p> : <p className="text-red">{error?.message}</p>}
                     <button
                         disabled={!resetEmail}

@@ -17,7 +17,7 @@ const MyDates = () => {
     useEffect(() => {
         const getProfile = async () => {
             const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('email', '==', userEmail)))
-            console.log("gimme PROFILES NOW", querySnapshot)
+            // console.log("gimme PROFILES NOW", querySnapshot)
             setProfile(querySnapshot?.docs.map(doc => {
                 return {
                     id: doc.id,
@@ -33,19 +33,28 @@ const MyDates = () => {
     }, [])
 
 
-  return (
-    <Container>
-        <div>
-            <h1 className="text-4xl text-center font-bold">Meine Dates</h1>
-            <div>
-            {dates?.filter(date => date?.email?.includes(profile?.data?.email)).map((date) => (
-                                <DateToRate profile={profile} date={date} key={date.id} />
-                            ))}
+    return (
+        <Container>
+            <div className="text-center">
+                <h1 className="text-4xl font-bold">Meine Dates</h1>
+                <div>
+                    {dates?.filter(date => date?.email?.includes(profile?.data?.email)).length > 0 ?
+                        dates?.filter(date => date?.email?.includes(profile?.data?.email)).map((date) => (
+                            <DateToRate profile={profile} date={date} key={date.id} />
+                        )) :
+                        <div className="mt-16 mb-4">
+                            <h2 className="text-xl font-semibold">Du hast noch keine Dates!</h2>
+                            <p>Das kannst du aber schnell ändern, such dir schnell und einfach Fantsys aus!</p>
+                            <a href="/">
+                                <button className="bg-fantsy-blue-400 hover:bg-fantsy-blue-500 py-2 px-4 rounded-lg text-white font-semibold mt-8">Fantsy suchen</button>
+                            </a>
+                        </div>
+                    }
+                </div>
             </div>
-        </div>
 
-    </Container>
-  )
+        </Container>
+    )
 }
 
 export default MyDates

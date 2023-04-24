@@ -11,12 +11,15 @@ const UserProfile = () => {
 
     useEffect(() => {
         if (profiles.length === 0) {
-            return
+          return;
         }
-        // console.log(router.query.slug, "++SLUG") //REMOVE FOR PROD
-
-        setProfile(profiles.find(profile => profile.id === router.query.slug))
-    }, [])
+      
+        const currentProfile = profiles.find(
+          (profile) => profile.id === router.query.slug
+        );
+      
+        setProfile(currentProfile || null);
+      }, [router.query.slug, profiles]);
 
     return (
             <UserProfileMain profile={profile} />

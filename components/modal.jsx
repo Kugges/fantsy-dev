@@ -5,12 +5,14 @@ const Modal = ({ isVisible, onClose, children }) => {
   if (!isVisible) return null;
   return (
     <div className="fixed inset-0 z-40 bg-shade-900 bg-opacity-25 flex justify-center backdrop-blur-sm items-center">
-        <div className="w-2/3 lg:w-1/3 flex flex-col">
-          <button className="text-white text-xl p-1 self-end" onClick={() => onClose()}><AiOutlineClose /></button>
-            <div className="bg-white rounded-lg p-4 shadow-lg">
-              {children}
-            </div>
+      <div className="w-full m-4 lg:w-1/3 bg-white rounded-lg p-4 shadow-lg">
+        <div className="">
+          <div className="flex justify-end">
+            <button className="text-shade-500 text-xl" onClick={() => onClose()}><AiOutlineClose /></button>
+          </div>
+          {children}
         </div>
+      </div>
     </div>
   )
 }

@@ -8,7 +8,7 @@ import { fireDb } from "../firebaseClient";
 import firebase from "firebase/compat/app"
 
 export default function Home() {
-// export default function Home({ workerProfiles }) {
+  // export default function Home({ workerProfiles }) {
 
   // const [profiles, setProfiles] = useState([]);
 
@@ -37,10 +37,10 @@ export default function Home() {
     <PushNotificationLayout>
       <>
         <div className="min-h-screen pt-20 sm:pt-40">
-          <div className="flex flex-col pb-20 sm:flex-row items-center justify-center">
-            <div>
+          <div className="flex flex-col sm:flex-row items-center justify-center">
+            {/* <div>
               <h2 className="text-2xl text-center sm:text-left">Willkommen bei</h2>
-            </div>
+            </div> */}
             <div>
               <Image
                 src={logo}
@@ -52,8 +52,9 @@ export default function Home() {
               />
             </div>
           </div>
-          {/* <UserList workerProfiles={profiles} /> */}
-          <UserList/>
+              <p className="text-center py-10 w-11/12 sm:w-1/3 mx-auto h-50 sm:h-auto text-sm sm:text-md">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. 
+              At vero eos et accusam et justo duo dolores et ea rebum.</p>
+          <UserList />
         </div>
       </>
     </PushNotificationLayout>

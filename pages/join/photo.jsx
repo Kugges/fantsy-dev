@@ -13,7 +13,7 @@ const styles = {
     dotDone: "h-10 w-10 mx-5 rounded-full bg-fantsy-orange-500 flex items-center justify-center text-white font-bold",
     dot: "h-10 w-10 mx-5 rounded-full bg-shade-200 flex items-center justify-center text-shade-600",
     fantsyInput: "focus:outline-fantsy-orange-500 hover:outline-fantsy-orange-200 px-4 py-2 w-full bg-shade-50 rounded-lg",
-    imageUploadBtn: "cursor-pointer block w-full text-sm mx-10 text-slate-500 file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-fantsy-green-200 file:text-fantsy-green-500 hover:file:bg-fantsy-green-500 hover:file:text-white",
+    imageUploadBtn: "cursor-pointer block w-full text-sm mx-10 text-slate-500 file:cursor-pointer file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-fantsy-blue-200 file:text-fantsy-blue-500 hover:file:bg-fantsy-blue-500 hover:file:text-white",
     avatarOut: "aspect-square mx-auto rounded-full border-8 shadow-lg border-fantsy-green-500",
     avatarIn: "aspect-square mx-auto rounded-full border-8 shadow-lg border-white"
 }
@@ -65,7 +65,6 @@ const Photo = () => {
     return (
         <Container>
             <div className="flex flex-col justify-center items-center">
-
                 <div className="flex flex-row absolute top-24">
                     <div className={styles.dotDone}>
                         <div>1</div>
@@ -80,7 +79,7 @@ const Photo = () => {
                         <div>4</div>
                     </div>
                 </div>
-                <div>
+                <div className="mt-16 sm:mt-0">
                     <h1 className="text-4xl text-center font-bold">Lade ein Profilbild hoch!</h1>
                     <form className="flex flex-col items-center gap-4 mt-10" onSubmit={handleUpload}>
                         <div className="col-span-1">

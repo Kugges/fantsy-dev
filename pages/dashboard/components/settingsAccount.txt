@@ -1,0 +1,156 @@
+import { updateDoc, doc } from 'firebase/firestore';
+import { useRouter } from 'next/router';
+import React, { useContext } from 'react'
+import { useForm } from 'react-hook-form';
+import { AuthContext } from '../../../src/hook/auth';
+import { fireDb } from '../../../firebaseClient'
+
+
+const { user } = useContext(AuthContext);
+
+const SettingsAccount = ({ currentProfile }) => {
+    
+    const router = useRouter();
+
+    const { register, handleSubmit, formState: { errors }, submitting } = useForm();
+    
+    const updateUsername = async () => {
+    
+        const profileData = {
+            displayName: userName,
+            userPrename: prename,
+            userLastname: lastname,
+            userCity: city,
+            userPostcode: postcode,
+            userCountry: country,
+        }
+    
+        // UPDATE PROFILE DOC
+        await updateDoc(doc(fireDb, "profiles", user.uid), profileData)
+            .then(() => {
+                // setPrename("")
+                // router.push("/dashboard/account")
+                toast.success("Accountdaten aktualisiert!");
+                window.location.reload();
+            }).catch(function (error) {
+                const message = error.message;
+                console.log(error.message);
+            })
+    }
+
+    return (
+        <form onSubmit={handleSubmit(updateUsername)} className="grid">
+            {/* ---USERNAME--- */}
+            <div className="mt-5 grid grid-cols-4">
+                <label htmlFor="name" className="py-1 col-span-1">Username </label>
+                <input
+                    {...register('name', {
+                        required: true
+                    })}
+                    placeholder={currentProfile?.displayName}
+                    className={styles.fantsyInput}
+                    type="text"
+                    id="username"
+                    name="name"
+                    onChange={(e) => setUserName(e.target.value)}
+                    value={userName}
+                />
+            </div>
+            <br></br>
+            {/* ---PRENAME--- */}
+            <div className="mt-5 grid grid-cols-4">
+                <label htmlFor="prename" className="py-1 col-span-1">Vorname </label>
+                <input
+                    {...register('prename', {
+                        required: true
+                    })}
+                    placeholder={currentProfile?.userPrename}
+                    className={styles.fantsyInput}
+                    type="text"
+                    id="prename"
+                    name="prename"
+                    onChange={(e) => setPrename(e.target.value)}
+                    value={prename}
+                />
+            </div>
+            {/* ---LASTNAME--- */}
+            <div className="mt-5 grid grid-cols-4">
+                <label htmlFor="lastname" className="py-1 col-span-1">Nachname </label>
+                <input
+                    {...register('lastname', {
+                        required: true
+                    })}
+                    placeholder={currentProfile?.userLastname}
+                    className={styles.fantsyInput}
+                    type="text"
+                    id="lastname"
+                    name="lastname"
+                    onChange={(e) => setLastname(e.target.value)}
+                    value={lastname}
+                />
+            </div>
+            <br></br>
+            {/* ---CITY--- */}
+            <div className="mt-5 grid grid-cols-4">
+                <label htmlFor="city" className="py-1 col-span-1">Stadt </label>
+                <input
+                    {...register('city', {
+                        required: true
+                    })}
+                    placeholder={currentProfile?.userCity}
+                    className={styles.fantsyInput}
+                    type="text"
+                    id="city"
+                    name="city"
+                    onChange={(e) => setCity(e.target.value)}
+                    value={city}
+                />
+            </div>
+            {/* ---POSTCODE--- */}
+            <div className="mt-5 grid grid-cols-4">
+                <label htmlFor="city" className="py-1 col-span-1">Postleitzahl </label>
+                <input
+                    {...register('postcode', {
+                        required: true
+                    })}
+                    placeholder={currentProfile?.userPostcode}
+                    className={styles.fantsyInput}
+                    type="number"
+                    id="postcode"
+                    name="postcode"
+                    onChange={(e) => setPostcode(e.target.value)}
+                    value={postcode}
+                />
+            </div>
+            {/* ---COUNTRY--- */}
+            <div className="mt-5 grid grid-cols-4">
+                <label htmlFor="city" className="py-1 col-span-1">Land </label>
+                <input
+                    {...register('country', {
+                        required: true
+                    })}
+                    placeholder={currentProfile?.userCountry}
+                    className={styles.fantsyInput}
+                    type="text"
+                    id="country"
+                    name="country"
+                    onChange={(e) => setCountry(e.target.value)}
+                    value={country}
+                />
+            </div>
+
+            <br></br>
+            <br></br>
+            <br></br>
+            <div className="mt-5 grid grid-cols-6">
+                <button
+                    disabled={submitting}
+                    type="submit"
+                    className={styles.submitBtn}
+                >Aktualisieren</button>
+            </div>
+        </form>
+    )
+}
+
+export default SettingsAccount

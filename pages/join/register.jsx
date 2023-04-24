@@ -10,6 +10,7 @@ import Container from '../../components/container';
 import Modal from '../../components/modal';
 import Login from '../login';
 import starterImg from "../../images/profile-starter.png"
+import bannerImg from "../../images/fantsy-banner.png"
 import { AiFillEye, AiFillEyeInvisible } from 'react-icons/ai'
 
 import { useForm } from 'react-hook-form';
@@ -22,6 +23,7 @@ const styles = {
 export default function Register() {
 
   const [url, setURL] = useState(starterImg);
+  const [urlBg, setUrlBg] = useState(bannerImg);
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -46,6 +48,7 @@ export default function Register() {
       .then((userCredential) => {
         const user = userCredential.user;
         setURL(url);
+        setUrlBg(urlBg);
         const userData = {
           id: user.uid,
           createdAt: serverTimestamp(),
@@ -56,8 +59,10 @@ export default function Register() {
           displayName: userName,
           profileSince: serverTimestamp(),
           likesCount: 0,
+          premiumUser: false,
           bio: "Fantsy meeting you here!",
-          userProfileUrl: url
+          userProfileUrl: url,
+          userBgUrl: urlBg
 
         });
         setDoc(doc(fireDb, "users", user.uid), userData);
@@ -164,12 +169,12 @@ export default function Register() {
         {/* ---READ AGB--- */}
         <div className="my-5 flex">
           <input className="focus:outline-fantsy-orange-500 px-2 mr-2 bg-shade-50" type="checkbox" required onChange={(e) => hasReadAgb(e.target.checked)} />
-          <label htmlFor="workerType">Ich habe die <Link href="/agb" className="text-fantsy-blue-800 hover:underline">AGB</Link> gelesen und bin einverstanden</label>
+          <label htmlFor="workerType">Ich habe die <Link href="/agb" className="text-fantsy-blue-500 font-semibold hover:underline">AGB</Link> gelesen und bin einverstanden</label>
         </div>
         {/* ---READ TERMS--- */}
         <div className="mt-5 flex">
           <input className="focus:outline-fantsy-orange-500 px-2 mr-2 bg-shade-50" type="checkbox" required onChange={(e) => hasReadTerms(e.target.checked)} />
-          <label htmlFor="workerType">Ich habe die <Link href="/terms" className="text-fantsy-blue-800 hover:underline">Datenschutzerklärung</Link> gelesen und bin einverstanden</label>
+          <label htmlFor="workerType">Ich habe die <Link href="/terms" className="text-fantsy-blue-500 font-semibold hover:underline">Datenschutzerklärung</Link> gelesen und bin einverstanden</label>
         </div>
         <p className="text-shade-300">Ich willige in die Verarbeitung meiner Daten gemäß der DSE ein. Ich bin mir bewusst und willige ausdrücklich ein, dass sensible Daten zu meiner sexuellen Orientierung & meinen Vorlieben verarbeitet werden, und dass diese Verarbeitung gemäß Nr. 4 & 7 DSE in Ländern außerhalb des Europäischen Wirtschaftsraums („EWR“) stattfindet.</p>
 
@@ -178,6 +183,7 @@ export default function Register() {
           disabled={!readTerms || !readAgb}
           className="mt-5 bg-fantsy-green-400 rounded-lg p-2 cursor-pointer w-full text-white hover:bg-fantsy-green-500 disabled:bg-fantsy-green-300 float-left font-bold"
           type="submit"
+          value="Registrieren"
         />
         <div className="float-left sm:float-right">
           <span className="font-bold">Bereits registriert?</span>

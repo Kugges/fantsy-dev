@@ -14,6 +14,14 @@ const FantsyProvider = ({ children }) => {
 
     const { user } = useContext(AuthContext)
 
+    // SHOW/HIDE CHAT SIDEBAR
+    const [sidebar, setSidebar] = useState(false);
+
+    const toggleSidebar = () => {
+        setSidebar(!sidebar);
+
+    }
+
     // GET ALL USER DOCUMENTS
     useEffect(() => {
         const getUsers = async () => {
@@ -82,8 +90,10 @@ const FantsyProvider = ({ children }) => {
 
     return (
         <FantsyContext.Provider
-            value={{ profiles, users }}
-        >{children}</FantsyContext.Provider>
+            value={{ profiles, users, sidebar, toggleSidebar }}
+        >
+            {children}
+        </FantsyContext.Provider>
     )
 }
 

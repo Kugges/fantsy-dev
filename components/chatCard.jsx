@@ -5,13 +5,15 @@ import getOtherEmail from '../utils/getOtherEmail'
 import { AiOutlineClose, AiOutlineSend } from 'react-icons/ai'
 import { addDoc, collection, getDocs, orderBy, query, serverTimestamp, where } from 'firebase/firestore'
 import { AuthContext } from '../src/hook/auth'
+import Image from 'next/image'
+import Link from 'next/link'
 
 
 const styles = {
-    chatWindow: "w-72 h-96 bg-white shadow-xl ml-4 rounded-t-lg overflow-hidden hidden",
-    chatHeader: "w-full h-10 bg-fantsy-orange-200 px-3 flex items-center justify-between active:bg-fantsy-orange-400",
-    chatInput: "w-full p-2 border border-shade-200 rounded-lg focus:outline-fantsy-orange-300",
-    chatArea: "w-full h-3/4 bg-shade-50 overflow-y-auto scrollbar-hide flex flex-col-reverse justify-items text-sm",
+    chatWindow: "w-screen sm:w-72 h-screen sm:h-96 bg-white shadow-xl grid grid-rows-6 z-50 ml-4 sm:rounded-t-lg overflow-hidden hidden",
+    chatHeader: "w-full row-span-1 sm:h-10 bg-fantsy-orange-200 p-3 flex items-center justify-between active:bg-fantsy-orange-400",
+    chatInput: "w-full row-span-4 p-2 border border-shade-200 rounded-lg focus:outline-fantsy-orange-300",
+    chatArea: "w-full row-span-1 h-4/5 sm:h-3/4 bg-shade-50 overflow-y-auto scrollbar-hide flex flex-col-reverse justify-items text-sm",
     userMsg: "ml-2 mr-10 my-1 px-3 py-2 max-w-max rounded-lg bg-fantsy-orange-500 text-white",
     otherMsg: "mr-2 ml-10 my-1 px-3 py-2 max-w-max rounded-lg bg-shade-100 self-end",
 }
@@ -71,15 +73,28 @@ const ChatCard = ({ chat }) => {
             timestamp: serverTimestamp()
         })
         setInput("");
-    }   
+    }
 
     return (
 
         <div id={chat.id} className={styles.chatWindow}>
             {/* EMAIL OF OTHER PARTICIPANT IN CHAT */}
             <div className={styles.chatHeader}>
-                <span>{otherProfile?.data?.displayName}</span>
-                <AiOutlineClose className="cursor-pointer" onClick={handleClick} />
+                <div className="flex items-center">
+                    <Image
+                        src={otherProfile?.data?.userProfileUrl}
+                        alt="profile image"
+                        width={30}
+                        height={30}
+                        priority="eager"
+                        className="rounded-full aspect-square"
+                    />
+
+                    <Link href={`/profile/${otherProfile.id}`}>
+                        <span className="ml-2 hover:underline cursor-pointer">{otherProfile?.data?.displayName}</span>
+                    </Link>
+                </div>
+                <AiOutlineClose size={20} className="cursor-pointer hover:bg-fantsy-orange-300 hover:rounded-full p-1" onClick={handleClick} />
             </div>
             {/* CHAT MESSAGE AREA */}
             <div className={styles.chatArea}>
@@ -90,8 +105,8 @@ const ChatCard = ({ chat }) => {
             {/* SEND MESSAGE */}
             <form className="m-2 flex flex-row gap-2">
                 <input onSubmit={sendMessage} className={styles.chatInput} onChange={(e) => setInput(e.target.value)} value={input} type="text" placeholder="Schreibe eine Nachricht..." />
-                <button disabled={!input} onClick={sendMessage} className="text-fantsy-orange-500 opacity-50 hover:opacity-100">
-                    <AiOutlineSend size={20} /></button>
+                <button disabled={!input} onClick={sendMessage} className="text-fantsy-orange-500 cursor-pointer opacity-50 hover:opacity-100">
+                    <AiOutlineSend size={30} /></button>
             </form>
         </div>
     )

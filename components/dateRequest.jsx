@@ -5,6 +5,7 @@ import { fireDb } from '../firebaseClient';
 import fantsyheart from "../images/peach-logo.png"
 import { useForm } from 'react-hook-form'
 import { toast } from "react-toastify"
+import { useRouter } from 'next/router';
 
 const DateRequest = ({ profile, user }) => {
     const [date, setDate] = useState("");
@@ -12,6 +13,8 @@ const DateRequest = ({ profile, user }) => {
     const [dateLength, setDateLength] = useState("");
     const [requestText, setRequestText] = useState("");
     const [userProfile, setUserProfile] = useState([]);
+
+    const router = useRouter();
 
     const { register, handleSubmit, formState: { errors }, submitting } = useForm();
 
@@ -53,17 +56,18 @@ const DateRequest = ({ profile, user }) => {
             datingLength: dateLength,
             pending: true
         }).then(() => {
-            toast.success("Date-Anfrage versendet!")
+            toast.success("Date-Anfrage versendet!");
+            router.push(`/`);
         })
     }
     const workerPrices = profile.data.workerPrices;
-    console.log("lodemandel", workerPrices)
+    // console.log("lodemandel", workerPrices)
 
 
     return (
         <div>
-            <h1 className="text-4xl text-center font-bold mt-5">Date vereinbaren</h1>
-            <div className="grid grid-cols-3 w-2/4 mt-10 mx-auto gap-4">
+            <h1 className="text-4xl text-center font-bold">Date vereinbaren</h1>
+            <div className="grid grid-cols-3 w-2/4 mx-auto gap-4">
                 <div className="flex flex-col col-span-1 items-center my-6">
                     <Image
                         src={userProfile?.data?.userProfileUrl}
@@ -127,30 +131,6 @@ const DateRequest = ({ profile, user }) => {
                             onChange={(e) => setTime(e.target.value)}
                             value={time}>
                             <option>Uhrzeit wählen</option>
-                            <option>0:00</option>
-                            <option>0:30</option>
-                            <option>1:00</option>
-                            <option>1:30</option>
-                            <option>2:00</option>
-                            <option>2:30</option>
-                            <option>3:00</option>
-                            <option>3:30</option>
-                            <option>4:00</option>
-                            <option>4:30</option>
-                            <option>5:00</option>
-                            <option>5:30</option>
-                            <option>6:00</option>
-                            <option>6:30</option>
-                            <option>7:00</option>
-                            <option>7:30</option>
-                            <option>8:00</option>
-                            <option>8:30</option>
-                            <option>9:00</option>
-                            <option>9:30</option>
-                            <option>10:00</option>
-                            <option>10:30</option>
-                            <option>11:00</option>
-                            <option>11:30</option>
                             <option>12:00</option>
                             <option>12:30</option>
                             <option>13:00</option>
@@ -175,6 +155,30 @@ const DateRequest = ({ profile, user }) => {
                             <option>22:30</option>
                             <option>23:00</option>
                             <option>23:30</option>
+                            <option>0:00</option>
+                            <option>0:30</option>
+                            <option>1:00</option>
+                            <option>1:30</option>
+                            <option>2:00</option>
+                            <option>2:30</option>
+                            <option>3:00</option>
+                            <option>3:30</option>
+                            <option>4:00</option>
+                            <option>4:30</option>
+                            <option>5:00</option>
+                            <option>5:30</option>
+                            <option>6:00</option>
+                            <option>6:30</option>
+                            <option>7:00</option>
+                            <option>7:30</option>
+                            <option>8:00</option>
+                            <option>8:30</option>
+                            <option>9:00</option>
+                            <option>9:30</option>
+                            <option>10:00</option>
+                            <option>10:30</option>
+                            <option>11:00</option>
+                            <option>11:30</option>
                         </select>
                     </div>
                 </div>
@@ -214,7 +218,7 @@ const DateRequest = ({ profile, user }) => {
                     </div>
                 </div>
                 <div className="flex flex-row gap-4 items-center justify-end">
-                    <input type="submit" className="p-2 rounded-lg cursor-pointer bg-fantsy-green-400 text-white hover:bg-fantsy-green-500" />
+                    <input type="submit" className="p-2 rounded-lg cursor-pointer bg-fantsy-green-400 text-white hover:bg-fantsy-green-500" value="Anfrage versenden" />
                 </div>
             </form>
 

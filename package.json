@@ -11,6 +11,7 @@
     "deploy": "yarn build && cross-env NODE_ENV=production firebase deploy --only functions,hosting"
   },
   "dependencies": {
+    "@invertase/image-processing-api": "^0.1.0",
     "@react-native-firebase/app": "^16.5.0",
     "@react-native-firebase/auth": "^16.5.0",
     "@react-native-firebase/database": "^16.5.0",
@@ -24,10 +25,13 @@
     "flowbite": "^1.5.4",
     "flowbite-react": "^0.3.7",
     "geofire-common": "^6.0.0",
+    "geofirestore": "^5.2.0",
+    "geofirex": "^0.1.0",
     "localforage": "^1.10.0",
     "next": "13.0.2",
     "next-transpile-modules": "^10.0.0",
     "nookies": "^2.5.2",
+    "nprogress": "^0.2.0",
     "react": "18.2.0",
     "react-datepicker": "^4.8.0",
     "react-dom": "18.2.0",

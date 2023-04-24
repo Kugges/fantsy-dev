@@ -9,7 +9,7 @@ const nextConfig = {
     }
   },
   images: {
-    domains: ['fantsy-net.web.app', 'firebasestorage.googleapis.com'],
+    domains: ['fantsy-net.web.app', 'firebasestorage.googleapis.com', 'europe-west3-fantsy-net.cloudfunctions.net'],
   }
 }
 

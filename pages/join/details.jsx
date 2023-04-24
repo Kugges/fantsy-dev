@@ -15,7 +15,7 @@ const styles = {
     dotDone: "h-10 w-10 mx-5 rounded-full bg-fantsy-orange-500 flex items-center justify-center text-white font-bold",
     dot: "h-10 w-10 mx-5 rounded-full bg-shade-200 flex items-center justify-center text-shade-600",
     fantsyInput: "focus:outline-fantsy-orange-500 hover:outline-fantsy-orange-200 px-2 py-1 w-full bg-shade-50 rounded-lg",
-    formRow: "my-10 flex flex-row gap-10 w-full",
+    formRow: "my-10 flex flex-col sm:flex-row gap-10 w-full",
 }
 
 const Details = () => {
@@ -90,10 +90,10 @@ const Details = () => {
                         <div>4</div>
                     </div>
                 </div>
+                <form onSubmit={handleSubmit(addDetailsToProfile)} className="mt-16 sm:mt-0">
                 <h1 className="text-4xl text-center font-bold">Erzähle uns etwas über dich</h1>
-                <form onSubmit={handleSubmit(addDetailsToProfile)}>
                     <div className={styles.formRow}>
-                        <div className="basis-1/2">
+                        <div className="col-span-2 sm:col-span-1 sm:basis-1/2">
                             <label className="flex" htmlFor="stature">Körperstatur</label>
                             <select
                                 {...register('stature', {
@@ -113,7 +113,7 @@ const Details = () => {
                                 <option>Dick</option>
                             </select>
                         </div>
-                        <div className="basis-1/2">
+                        <div className="col-span-2 sm:col-span-1 sm:basis-1/2">
                             <label className="flex" htmlFor="bodysize">Körpergröße in cm</label>
                             <input
                                 {...register('bodysize', {
@@ -135,7 +135,7 @@ const Details = () => {
                         </div>
                     </div>
                     <div className={styles.formRow}>
-                        <div className="basis-1/2">
+                        <div className="col-span-2 sm:col-span-1 sm:basis-1/2">
                             <label className="flex" htmlFor="bodyweight">Körpergewicht in kg</label>
                             <input
                                 {...register('bodyweight', {
@@ -155,7 +155,7 @@ const Details = () => {
                                 {errors.bodyweight && errors.bodyweight.type === "min" && <p className={styles.errormsg}>Du wiegst zu wenig.</p>}
                                 {errors.bodyweight && errors.bodyweight.type === "max" && <p className={styles.errormsg}>Du wiegst zu viel.</p>}
                         </div>
-                        <div className="basis-1/2">
+                        <div className="col-span-2 sm:col-span-1 sm:basis-1/2">
                             <label className="flex" htmlFor="origin">Herkunft</label>
                             <select
                                 {...register('origin', {
@@ -174,7 +174,7 @@ const Details = () => {
                         </div>
                     </div>
                     <div className={styles.formRow}>
-                        <div className="basis-1/2">
+                        <div className="col-span-2 sm:col-span-1 sm:basis-1/2">
                             <label className="flex" htmlFor="type">Typ</label>
                             <select
                                 {...register('type', {
@@ -198,7 +198,7 @@ const Details = () => {
                                 <option>Anderer Typ</option>
                             </select>
                         </div>
-                        {/* <div className="basis-1/2">
+                        {/* <div className="col-span-2 sm:col-span-1 sm:basis-1/2">
                             <label className="flex" htmlFor="language">Sprache</label>
                              <input className={styles.fantsyInput} type="number" maxLength="5" id="postCode" name="postcode" required onChange={(e) => setPostcode(e.target.value)} value={postcode} />
                              <TagsInput

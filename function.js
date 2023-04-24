@@ -11,7 +11,7 @@ const server = next({
   conf: {
     distDir: '.next',
     images: {
-      domains: ['fantsy-net.web.app', 'firebasestorage.googleapis.com'],
+      domains: ['fantsy-net.web.app', 'firebasestorage.googleapis.com', 'europe-west3-fantsy-net.cloudfunctions.net'],
     }
   },
   // conf: customNextConfig,

@@ -14,14 +14,14 @@ const DatePost = ({ profile, date }) => {
     });
     return (
         <>
-            <div className={date?.archived === false ? "hidden" : "w-3/4 py-4"}>
+            <div className={date?.archived === false ? "hidden" : "w-full sm:w-3/4 py-4"}>
                 <div className="flex justify-center items-center text-shade-500 gap-4">
                     <p>Datum: {dateDate}</p>
                     <p>Dauer: {date?.datingLength}</p>
                 </div>
                 <div className="flex flex-col gap-2 p-2">
                     {/* INITIATOR COMMENT */}
-                    <div className="w-11/12 mb-4">
+                    <div className="w-full sm:w-11/12 mb-4">
                         <div className="flex items-center py-2 gap-2">
                             <Image
                                 src={date?.userAvatars[0]}
@@ -59,9 +59,9 @@ const DatePost = ({ profile, date }) => {
                         }
                     </div>
                     {/* RECEIVER COMMENT */}
-                    <div className="ml-10 w-11/12">
+                    <div className="w-full sm:w-11/12 self-end">
                         {date.receiverComment !== "" ?
-                        <div className="w-full bg-white rounded-lg p-2">
+                        <div className="w-full bg-fantsy-orange-200 rounded-lg p-2">
                             <p className="font-bold">{date?.receiverTitle}</p>
                             <p>{date?.receiverComment}</p>
                         </div>

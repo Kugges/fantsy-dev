@@ -2,6 +2,8 @@ import React, { useState, useContext, useEffect } from 'react'
 import { AiOutlineMenu, AiOutlineClose, AiOutlineUser, AiFillCaretDown } from 'react-icons/ai'
 import { AuthContext } from "../src/hook/auth"
 import Link from 'next/link'
+import Router from 'next/router'
+import { BsChatDots } from "react-icons/bs"
 
 import firebase from "firebase/compat/app"
 
@@ -9,15 +11,16 @@ import Image from 'next/image'
 import logo from '../images/peach-logo.png'
 import Modal from "../components/modal"
 import Login from '../pages/login'
+// import Loader from "/loader"
 import { FantsyContext } from '../src/hook/FantsyContext'
 
 const styles = {
 
     loginbutton: "bg-shade-800 py-2 px-5 cursor-pointer text-white font-bold rounded-lg hover:bg-fantsy-blue-600",
     logoutbutton: "py-2 px-5 cursor-pointer hover:text-white",
-    dropdownButton: "dropdown-toggle flex items-center px-5 cursor-pointer hover:text-white",
-    dropdownMenu: "dropdown-menu sm:absolute py-2 min-w-max bg-fantsy-orange-500 text-base z-50 list-none text-center rounded-none shadow-none ease-in duration-100 sm:rounded-lg sm:shadow-lg",
-    menuLi: "px-10 py-2 hover:text-white text-sm"
+    dropdownButton: "dropdown-toggle flex items-center cursor-pointer hover:text-white",
+    dropdownMenu: "dropdown-menu sm:absolute sm:-ml-10 py-2 min-w-max bg-fantsy-orange-500 text-base z-50 list-none text-center rounded-none shadow-none ease-in duration-100 sm:rounded-lg sm:shadow-lg",
+    menuLi: "px-12 py-2 hover:text-white text-sm"
 }
 
 const Navbar = () => {
@@ -32,7 +35,7 @@ const Navbar = () => {
     const [showModal, setShowModal] = useState(false)
 
     const { user } = useContext(AuthContext)
-    const { profiles } = useContext(FantsyContext)
+    const { profiles, toggleSidebar } = useContext(FantsyContext)
 
     // CHECK IF USER IS STRIPE PREMIUM
     // const userIsPremium = usePremiumStatus(user)
@@ -52,6 +55,8 @@ const Navbar = () => {
     //     getUserProfile();
     // }, [])
 
+
+
     const UserDropDownMobile = ({ profile }) => {
         const [innerNav, setinnerNav] = useState(false);
 
@@ -69,15 +74,18 @@ const Navbar = () => {
                     <AiOutlineUser size={20} className="mr-2" /><span>
                         Mein Account</span>
                 </button>
+                <hr className="text-fantsy-orange-700"></hr>
                 <ul className={styles.dropdownMenu}>
                     <li className="px-10 py-2">Eingeloggt als <br></br>
                         <span className="text-xs">{profile.data.displayName}</span>
                     </li>
-                    <hr className="text-fantsy-orange-700"></hr>
-                    <li className={styles.menuLi}>
+
+                    <li
+                        onClick={handleInnerNav} className={styles.menuLi}>
                         <Link href={`/profile/${profile.id}`}>Mein Profil</Link>
                     </li>
-                    <li className={styles.menuLi}>
+                    <li
+                        onClick={handleInnerNav} className={styles.menuLi}>
                         <Link href="/dashboard/account">Account</Link>
                     </li>
                     <li className={styles.menuLi}>
@@ -107,7 +115,7 @@ const Navbar = () => {
             <>
                 <button onClick={handleInnerNav} className={styles.dropdownButton}>
                     <Image
-                    className="rounded-full border border-fantsy-orange-600"
+                        className="rounded-full border aspect-square border-fantsy-orange-600"
                         src={profile.data.userProfileUrl}
                         width={30}
                         height={30}
@@ -115,7 +123,7 @@ const Navbar = () => {
                         priority
                     />
                     <span className="mx-2">{profile.data.displayName}</span>
-                    <AiFillCaretDown size={20}/>
+                    <AiFillCaretDown size={20} />
                 </button>
                 <ul className={innerNav ? styles.dropdownMenu : "hidden absolute text-center ease-in duration-100"}>
                     <li className="px-10 py-2">Eingeloggt als <br></br>
@@ -152,9 +160,9 @@ const Navbar = () => {
 
     return (
         <>
-            <div className="fixed left-0 h-16 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
-                <p className="absolute z-50">v0.8.5</p>
-                <div className="w-11/12 sm:max-w-[1240px] m-auto flex justify-between items-center text-black">
+            <div className="fixed left-0 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
+                <p className="absolute top-14 sm:top-0 z-50">v0.9.3</p>
+                <div className="sm:max-w-[1240px] w-10/12  m-auto flex justify-between items-center text-black">
                     <Link href="/">
                         <Image
                             src={logo}
@@ -171,9 +179,10 @@ const Navbar = () => {
                             <Link href="/">Fantsys</Link>
                         </li>
                         {user ?
-                            <li className="p-4 hover:text-white">
-                                <Link href="/mydates">Meine Dates</Link>
-                            </li>
+                            
+                                <li className="p-4 hover:text-white">
+                                    <Link href="/mydates">Meine Dates</Link>
+                                </li>
                             :
                             <></>}
                         <li className="p-4">
@@ -187,7 +196,10 @@ const Navbar = () => {
                             }
                         </li>
                         <li className="p-4">
-                            {user ? <></> : <Link href="/join/register"><span className="cursor-pointer hover:text-white">Register</span></Link>}
+                            {user ? <>
+                                <div onClick={toggleSidebar} className="text-black hover:text-white cursor-pointer flex justify-center items-center">
+                                 Meine Chats
+                                </div></> : <Link href="/join/register"><span className="cursor-pointer hover:text-white">Register</span></Link>}
                         </li>
                     </ul>
 
@@ -208,9 +220,15 @@ const Navbar = () => {
                             <li onClick={handleNav} className="p-4 text-xl hover:text-white">
                                 <Link href="/">Fantsys</Link>
                             </li>
-                            <li onClick={handleNav} className="p-4 text-xl hover:text-white">
+                            {user ?
+                                <li onClick={handleNav} className="p-4 text-xl hover:text-white">
+                                    <Link href="/mydates">Meine Dates</Link>
+                                </li>
+                                :
+                                <></>}
+                            {/* <li onClick={handleNav} className="p-4 text-xl hover:text-white">
                                 <Link href="/about">Über Fantsy</Link>
-                            </li>
+                            </li> */}
                             <li className="p-4">
                                 {user ? <>
                                     {profiles?.filter(profile => profile.id.includes(user.uid))

@@ -70,7 +70,7 @@ const WorkerAccountDetails = () => {
     const [location, setLocation] = useState(null);
     useEffect(() => {
         const getLocation = () => {
-            if (navigator.geolocation) {
+            if (navigator.geolocation && user) {
                 navigator.geolocation.watchPosition(async (position) => {
                     const { latitude, longitude } = position.coords;
                     const geohash = geofire.geohashForLocation([latitude, longitude]);
@@ -117,10 +117,10 @@ const WorkerAccountDetails = () => {
             userPostcode: postcode,
             userCountry: country,
             workerProfile: workertype,
-            userImage1: placeholderUrl,
-            userImage2: placeholderUrl,
-            userImage3: placeholderUrl,
-            userImage4: placeholderUrl
+            userImage1: "",
+            userImage2: "",
+            userImage3: "",
+            userImage4: ""
         }
         // UPDATE PROFILE DOC
         await updateDoc(doc(fireDb, "profiles", user.uid), profileData)
@@ -150,20 +150,35 @@ const WorkerAccountDetails = () => {
                         <div>4</div>
                     </div>
                 </div>
-                <div>
+                {/* <div>
                     {location && (
                         <div>
                             Latitude: {location.latitude}
                             Longitude: {location.longitude}
                         </div>
                     )}
-                </div>
+                </div> */}
             </div>
 
-            <form onSubmit={handleSubmit(addProfileToFirebase)}>
+            <form onSubmit={handleSubmit(addProfileToFirebase)} className="mt-16 sm:mt-0">
                 <h1 className="text-4xl text-center font-bold">Erstelle dein Profil!</h1>
-                <div className="my-10 flex flex-row gap-10">
-                    <div className="basis-1/2">
+                <div className="my-10 flex flex-col justify-center">
+                    <label>Welche Rolle übernimmst du?</label>
+                    <select
+                        className={styles.fantsyInput}
+                        {...register('workertype', {
+                            required: true
+                        })}
+                        id="workerYes"
+                        name="workertype"
+                        onChange={(e) => setWorkerType(e.target.value === "true")}
+                        value={workertype.toString()}>
+                        <option value="false">Kunde*In</option>
+                        <option value="true">Anbieter*In</option>
+                    </select>
+                </div>
+                <div className="my-10 flex flex-col gap-10">
+                    <div className="col-span-2 sm:col-span-1">
                         <label htmlFor="prename">Vorname *</label>
                         <input className={styles.fantsyInput}
                             {...register('prename', {
@@ -178,7 +193,7 @@ const WorkerAccountDetails = () => {
                         {errors.prename && <p className={styles.errormsg}>Vorname fehlt.</p>}
 
                     </div>
-                    <div className="basis-1/2">
+                    <div className="col-span-2 sm:col-span-1">
                         <label htmlFor="lastname">Nachname *</label>
                         <input
                             className={styles.fantsyInput}
@@ -194,9 +209,9 @@ const WorkerAccountDetails = () => {
                         {errors.lastname && <p className={styles.errormsg}>Nachname fehlt.</p>}
                     </div>
                 </div>
-                <div className=" my-10 flex flex-row gap-10">
-                    <div className="basis-1/2">
-                        <label htmlFor="gender">Geschlecht *</label>
+                <div className=" my-10 flex flex-col gap-10">
+                    <div className="col-span-2 sm:col-span-1">
+                        <label htmlFor="gender">Identität *</label>
                         <select
                             className={styles.fantsyInput}
                             {...register('gender', {
@@ -210,11 +225,13 @@ const WorkerAccountDetails = () => {
                             <option value="">Wähle aus</option>
                             <option value="Weiblich">Weiblich</option>
                             <option value="Männlich">Männlich</option>
+                            <option value="Trans">Trans</option>
                             <option value="Divers">Divers</option>
+                            <option value="Paar">Paar</option>
                         </select>
-                        {errors.gender && <p className={styles.errormsg}>Wähle dein Geschlecht aus.</p>}
+                        {errors.gender && <p className={styles.errormsg}>Wähle deine/eure Identität aus.</p>}
                     </div>
-                    <div className="basis-1/2">
+                    <div className="col-span-2 sm:col-span-1">
                         <label htmlFor="sexuality">Sexuelle Orientierung *</label>
                         <select
                             className={styles.fantsyInput}
@@ -234,8 +251,8 @@ const WorkerAccountDetails = () => {
                         {errors.sexuality && <p className={styles.errormsg}>Wähle deine Sexualität.</p>}
                     </div>
                 </div>
-                <div className="my-10 flex flex-row gap-10">
-                    <div className="basis-1/2">
+                <div className="my-10 flex flex-col gap-10">
+                    <div className="col-span-2 sm:col-span-1">
                         <label htmlFor="birthday">Geburtsdatum *</label>
                         <input
                             className={styles.fantsyInput}
@@ -256,7 +273,7 @@ const WorkerAccountDetails = () => {
                         {errors.birthday && errors.birthday.type === "min" && <p className={styles.errormsg}>Du musst mindestens 18 Jahre alt sein!</p>}
                         {errors.birthday && errors.birthday.type === "max" && <p className={styles.errormsg}>Über 100 Jahre alt? I doubt it!</p>}
                     </div>
-                    <div className="basis-1/2">
+                    <div className="col-span-2 sm:col-span-1">
                         <label htmlFor="postcode">Postleitzahl *</label>
                         <input
                             className={styles.fantsyInput}
@@ -274,8 +291,8 @@ const WorkerAccountDetails = () => {
                         {errors.postcode && errors.postcode.type === "minLength" && <p className={styles.errormsg}>{errors.postcode.message}</p>}
                     </div>
                 </div>
-                <div className="my-10 flex flex-row gap-10">
-                    <div className="basis-1/2">
+                <div className="my-10 flex flex-col gap-10">
+                    <div className="col-span-2 sm:col-span-1">
                         <label htmlFor="city">Stadt *</label>
                         <input
                             className={styles.fantsyInput}
@@ -290,7 +307,7 @@ const WorkerAccountDetails = () => {
                         />
                         {errors.city && <p className={styles.errormsg}>Stadt fehlt.</p>}
                     </div>
-                    <div className="basis-1/2">
+                    <div className="col-span-2 sm:col-span-1">
                         <label htmlFor="country">Land *</label>
                         <input
                             className={styles.fantsyInput}
@@ -306,13 +323,13 @@ const WorkerAccountDetails = () => {
                         {errors.country && <p className={styles.errormsg}>Land fehlt.</p>}
                     </div>
                 </div>
-                <div className="mt-10 flex">
+                {/* <div className="mt-10 flex">
                     <input className="focus:outline-fantsy-orange-300 bg-shade-50 mr-2" type="checkbox" id="workerYes" name="workerType" onChange={(e) => setWorkerType(e.target.checked)} />
-                    <label htmlFor="workerType">Ich möchte mich und meinen Content in einem Fantsy-Profil anbieten.</label>
-                </div>
-                <div className="mb-10 flex">
+                    <label htmlFor="workerType">Ich möchte mich als Fantsy anbieten.</label>
+                </div> */}
+                {/* <div className="mb-10 flex">
                     <label className="flex italic text-shade-300" htmlFor="workerType">Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae nostrum, aspernatur incidunt reiciendis debitis iusto, a officia sequi nam, veniam qui est porro officiis impedit cum voluptatibus temporibus repudiandae ipsa.</label>
-                </div>
+                </div> */}
                 <div className="flex flex-row items-center justify-between">
                     <p>* erforderliche Daten um das Profil zu erstellen.</p>
                     <button

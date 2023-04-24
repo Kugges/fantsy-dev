@@ -45,6 +45,10 @@ a {
   box-sizing: border-box;
 }
 
+.z-100 {
+  z-index: 100 !important;
+}
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
