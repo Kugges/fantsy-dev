@@ -160,8 +160,8 @@ const Navbar = () => {
 
     return (
         <>
-            <div className="fixed left-0 w-full z-10 ease-in duration-300 bg-fantsy-orange-500">
-                <p className="absolute top-14 sm:top-0 z-50">v0.9.3</p>
+            <div className="fixed left-0 w-full z-10 ease-in duration-300 bg-fantsy-orange-500 drop-shadow-md">
+                <p className="absolute top-14 sm:top-0 z-50">v0.9.31</p>
                 <div className="sm:max-w-[1240px] w-10/12  m-auto flex justify-between items-center text-black">
                     <Link href="/">
                         <Image

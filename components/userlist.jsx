@@ -1,4 +1,4 @@
-import { collection, getDocs, query, where } from 'firebase/firestore'
+import { collection, getDocs, query, orderBy, where } from 'firebase/firestore'
 import React, { useEffect, useState } from 'react'
 import { GoSettings } from 'react-icons/go'
 import { FaCaretDown, FaCaretUp, FaSearch } from "react-icons/fa"
@@ -6,6 +6,7 @@ import { LazyLoadComponent } from 'react-lazy-load-image-component'
 import { fireDb } from '../firebaseClient'
 import UserCard from './userCard'
 import UserCardSkell from './userCardSkell'
+import { geolib, getDistance } from 'geolib';
 // import "flowbite"
 
 const styles = {
@@ -42,6 +43,33 @@ function UserList() {
         }
         fetchData()
     }, [])
+    // // GET USER LOCATION
+    // navigator.geolocation.getCurrentPosition(async (position) => {
+    //     const { latitude, longitude } = position.coords;
+    //     const userLocation = { latitude, longitude };
+
+    //     // GET ALL WORKER PROFILES
+    //     const querySnapshot = await getDocs(query(collection(fireDb, "profiles"), where('workerProfile', '==', true)));
+    //     const workerProfilesQuery = querySnapshot?.docs.map((doc) => {
+    //         const location = doc.data().location;
+    //         const workerLocation = {
+    //             latitude: location.latitude(),
+    //             longitude: location.longitude()
+    //         };
+    //         const distance = geolib.getDistance(userLocation, workerLocation) / 1000; // convert to km
+    //         return {
+    //             id: doc.id,
+    //             data: {
+    //                 ...doc.data(),
+    //                 distance
+    //             }
+    //         };
+    //     });
+
+    //     // SORT WORKER PROFILES BY DISTANCE
+    //     workerProfilesQuery.sort((a, b) => a.data.distance - b.data.distance);
+    //     setWorkerProfiles(workerProfilesQuery);
+    // });
 
     // GET ALL ONLINE USERS
     const [onlineProfiles, setOnlineProfiles] = useState([])
@@ -422,7 +450,7 @@ function UserList() {
                             <div className="flex text-shade-500 items-center justify-between">
                                 <h2 className="font-bold text-lg">Nach Tags suchen</h2><FaSearch size={20} />
                             </div>
-                            <p className="mb-1 text-shade-300">Trenne Tags mit Beistrich ( , )</p>
+                            <p className="mb-1 text-shade-300 text-sm">Trenne Tags mit Beistrich ( , )</p>
                             <div className="flex items-center mb-3">
                                 <textarea
                                     placeholder="Suche nach..."
@@ -443,7 +471,7 @@ function UserList() {
                             <div id="checkTags" className={checkedTags ? "block" : "hidden"}>
                                 <ul className="flex items-center flex-wrap">
                                     {tagsList.map((tag, index) => (
-                                        <li className="mr-2 bg-fantsy-orange-100 mb-2 px-2 rounded-full text-fantsy-orange-500 cursor-pointer hover:bg-fantsy-orange-500 hover:text-white" key={index}>{tag}</li>
+                                        <li className="mr-2 bg-fantsy-orange-100 text-sm mb-2 px-2 rounded-full text-fantsy-orange-500 cursor-pointer hover:bg-fantsy-orange-500 hover:text-white" key={index}>{tag}</li>
                                     ))}
                                 </ul>
                             </div>
@@ -567,10 +595,10 @@ function UserList() {
                 <div className="col-span-6 sm:col-span-4 sm:ml-5">
                     <h1 className="font-bold text-2xl mb-4">Premium Fantsys</h1>
                     {/*VIP Profiles List*/}
-                    <div className="grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 text-center mb-20">    
+                    <div className="grid gap-2 sm:gap-3 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 text-center mb-20">
                         {vipProfiles?.map((profile) => (
                             <LazyLoadComponent key={profile.id} placeholder={<UserCardSkell />} >
-                                <UserCard profile={profile} className="bg-fantsy-orange-500 text-white"/>
+                                <UserCard profile={profile} className="bg-fantsy-orange-500 text-white" />
                             </LazyLoadComponent>
                         ))}
 

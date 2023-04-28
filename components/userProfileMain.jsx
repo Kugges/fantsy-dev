@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState, useCallback } from 'react'
 import Image from 'next/image'
 
 import { AiFillEdit, AiOutlineWoman, AiOutlineMan, AiOutlineTag, AiFillStar, AiOutlineUpload } from "react-icons/ai";
-import { BsStarFill, BsCheck, BsChatDots } from "react-icons/bs";
+import { BsStarFill, BsCheck, BsChatDots, BsFillHeartFill, BsHeart } from "react-icons/bs";
 import { BiBody, BiWorld } from "react-icons/bi"
 
 import { useCollection, useCollectionData, useDocument } from 'react-firebase-hooks/firestore';
-import { collection, doc, getDocs, query, addDoc, where, limit } from 'firebase/firestore';
+import { collection, doc, getDocs, getDoc, query, addDoc, where, updateDoc, limit } from 'firebase/firestore';
 import { fireDb } from '../firebaseClient';
 import { AuthContext } from '../src/hook/auth';
 // import UserProfileDetails from './userProfileDetails';
@@ -64,8 +64,9 @@ const UserProfileMain = ({ profile }) => {
     const [dateSnapshot] = useCollection(collection(fireDb, "dates"));
     const dates = dateSnapshot?.docs.map(doc => ({ id: doc.id, ...doc.data() }));
 
-    // const query = collection(fireDb, `profiles/${user.uid}/details`);
-    // const [docs, loading, error] = useCollectionData(query);
+    // FOLLOWER COUNT
+    const [followerCount, setFollowerCount] = useState(profile.data?.follower);
+
 
     const isWorker = profile.data?.workerProfile;
     const profileEmail = profile?.data?.email;
@@ -107,6 +108,92 @@ const UserProfileMain = ({ profile }) => {
         }
         fetchData()
     }, [])
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //       const userRef = await getDoc(doc(fireDb, 'profiles', profile.id));
+    //       const followerCount = userRef.data()?.follower || 0;
+    //       setFollowerCount(followerCount);
+
+    //       const follows = userRef.data()?.follows || [];
+    //       setIsFollowing(user?.uid && follows.includes(user.uid));
+    //     };
+
+    //     fetchData();
+    //   }, [profile.id, user]);
+
+    const [isFollowing, setIsFollowing] = useState(null)
+    useEffect(() => {
+        if (!user || !user.uid || !profile?.data?.follows) {
+          return;
+        }
+        
+        const getIsFollowing = () => {
+          if (profile?.data?.follows.includes(user?.uid)) {
+            setIsFollowing(true);
+          } else {
+            setIsFollowing(false);
+          }
+        };
+        
+        getIsFollowing();
+      }, [profile?.data?.follows]); // add user.uid to dependency array as well
+
+    useEffect(() => {
+        if (!profile || !user?.uid) {
+            return;
+          }
+        setIsFollowing(profile?.data?.follows.includes(user.uid));
+    }, [profile?.data?.follows]);
+
+
+    // HANDLE FOLLOW / UNFOLLOW
+    const handleFollow = async (followUserId) => {
+        const userRef = doc(fireDb, 'profiles', profile.id);
+        const userDoc = await getDoc(userRef);
+        const follows = userDoc.data().follows || [];
+        if (!follows.includes(followUserId)) {
+            follows.push(followUserId);
+            await updateDoc(userRef, {
+                follows,
+                follower: userDoc.data().follower + 1
+            });
+            setFollowerCount(followerCount + 1);
+            setIsFollowing(true, () => {
+                console.log('isFollowing set to true');
+            });
+        }
+    };
+
+    const handleUnfollow = async (unfollowUserId) => {
+        const userRef = doc(fireDb, 'profiles', profile.id);
+        const userDoc = await getDoc(userRef);
+        const follows = userDoc.data()?.follows || [];
+        const index = follows.indexOf(unfollowUserId);
+        if (index > -1) {
+            follows.splice(index, 1);
+            await updateDoc(userRef, {
+                follows,
+                follower: userDoc.data().follower - 1
+            });
+            setFollowerCount(followerCount - 1);
+            setIsFollowing(false, () => {
+                console.log('isFollowing set to false');
+            });
+        }
+    };
+
+    // UPDATE THE DOCUMENT'S FOLLOWER COUNT
+    useEffect(() => {
+        if (!profile || !profile.id) return; // check if profile is defined and has an id property
+        const fetchData = async () => {
+            const userRef = await getDoc(doc(fireDb, 'profiles', profile.id));
+            const followerCount = userRef.data()?.follower || 0;
+            setFollowerCount(followerCount);
+        };
+
+        fetchData();
+    }, [profile]);
 
     const getUrl = (source) => {
         const URL = `https://europe-west3-fantsy-net.cloudfunctions.net/ext-image-processing-api-handler/process?operations=`;
@@ -192,16 +279,67 @@ const UserProfileMain = ({ profile }) => {
                                             <BsStarFill className="text-fantsy-orange-500 mr-1" size={20} />}
                                         {profile?.data?.likesCount === 0 ? <p>Keine Bewertung</p> : <p>{totalDates}</p>}
                                     </div>
+                                    <p>{followerCount} Follower</p>
                                 </div>
                             </div>
                         </div>
                         {profile.id === user.uid ?
-                                        <button className="rounded-full w-10 h-10 mr-2 -mt-7 flex items-center sm:hidden justify-center bg-white border border-fantsy-blue-500 hover:bg-fantsy-blue-300 my-2 mx-auto" onClick={goToAccount}>
-                                            <AiFillEdit className="text-shade-500" size={20} />
+                            <button className="rounded-full w-10 h-10 mr-2 -mt-7 flex items-center sm:hidden justify-center bg-white border border-fantsy-blue-500 hover:bg-fantsy-blue-300 my-2 mx-auto" onClick={goToAccount}>
+                                <AiFillEdit className="text-shade-500" size={20} />
+                            </button>
+                            :
+                            <>
+                            </>}
+                        <div className="block sm:hidden">
+                            {profile.id !== user.uid ?
+                                <div className="grid grid-cols-1 sm:grid-cols-4 mt-4 mx-auto gap-4 justify-center">
+                                    {!chatExists(profileEmail) && (profileEmail != user.email) ?
+                                        <div
+                                            onClick={() => startChat()}
+                                            className="border-fantsy-blue-500 text-center border-2 px-4 col-span-1 py-2 text-fantsy-blue-500 rounded-lg cursor-pointer hover:bg-fantsy-blue-500 hover:text-white"
+                                        >
+                                            <p>Chatanfrage</p>
+                                        </div> :
+                                        <div className="border-fantsy-orange-500 text-center border-2 px-4 col-span-1 py-2 text-fantsy-orange-500 rounded-lg">
+                                            <p>Ihr chattet bereits!</p>
+                                        </div>
+                                    }
+
+
+                                    <div className="flex justify-center gap-2">
+                                        {!profile.data.workerPrices ?
+                                            <div
+                                                onClick={() => setShowModal(true)}
+                                                className="text-center px-4 py-2 border-2 border-fantsy-blue-400 text-white rounded-lg cursor-pointer bg-fantsy-blue-400 hover:bg-fantsy-blue-500 hover:border-fantsy-blue-500">
+                                                <p>Date vereinbaren</p>
+                                            </div>
+                                            :
+                                            <div
+                                                className="px-4 py-2 col-span-1 text-shade-600 bg-shade-100 rounded-lg">
+                                                <p className="text-center">{profile.data.displayName} hat noch keine Preise!</p>
+                                            </div>
+                                        }
+
+                                        {profile?.data?.follows.includes(user.uid) || isFollowing ? (
+                                            <div className="rounded-lg cursor-pointer bg-shade-100 hover:bg-shade-200 text-shade-500 px-4 py-2 text-center flex items-center justify-center w-max" onClick={() => handleUnfollow(user.uid)}><BsHeart size={20} /></div>
+                                        ) : (
+                                            <div className="rounded-lg cursor-pointer bg-fantsy-green-400 border-2 border-fantsy-green-400 hover:bg-fantsy-green-500 text-white px-4 py-2 text-center flex items-center justify-center w-max" onClick={() => handleFollow(user.uid)}><BsFillHeartFill size={20} /></div>
+                                        )}
+                                    </div>
+
+                                </div> :
+                                <div className="sm:-mt-24 mx-auto gap-4 justify-center hidden sm:block">
+                                    {profile.id === user.uid ?
+                                        <button className="py-2 px-4 rounded-lg flex items-center bg-white hover:bg-fantsy-blue-300 my-2" onClick={goToAccount}>
+                                            <AiFillEdit className="mr-2 text-shade-500" size={20} />
+                                            <p>Profil bearbeiten</p>
                                         </button>
                                         :
                                         <>
                                         </>}
+                                </div>}
+
+                        </div>
                         <div className="mt-4">
                             <div>
                                 <ul className="py-4">
@@ -258,32 +396,43 @@ const UserProfileMain = ({ profile }) => {
 
                     </div>
                     <div className={styles.profileContent}>
-                        <div className="p-4 mt-4 sm:mt-0 sm:w-1/2">
+                        <div className="p-4 mt-4 sm:mt-0 sm:w-full hidden sm:block">
                             {profile.id !== user.uid ?
-                                <div className="grid grid-cols-1 sm:grid-cols-2 -mt-4 mx-auto gap-4 justify-center">
-                                    <div
-                                        onClick={() => startChat()}
-                                        className="border-fantsy-blue-500 text-center border-2 px-4 col-span-1 py-2 text-fantsy-blue-500 rounded-full cursor-pointer hover:bg-fantsy-blue-500 hover:text-white"
-                                    >
-                                        <p>Chatanfrage</p>
-                                    </div>
+                                <div className="grid grid-cols-1 sm:grid-cols-4 -mt-4 mx-auto gap-4 justify-center">
+                                    {!chatExists(profileEmail) && (profileEmail != user.email) ?
+                                        <div
+                                            onClick={() => startChat()}
+                                            className="border-fantsy-blue-500 text-center border-2 px-4 col-span-1 py-2 text-fantsy-blue-500 rounded-lg cursor-pointer hover:bg-fantsy-blue-500 hover:text-white"
+                                        >
+                                            <p>Chatanfrage</p>
+                                        </div> :
+                                        <div className="border-fantsy-orange-500 text-center border-2 px-4 col-span-1 py-2 text-fantsy-orange-500 rounded-lg">
+                                            <p>Ihr chattet bereits!</p>
+                                        </div>
+                                    }
+
                                     {profile.data.workerPrices ?
                                         <div
                                             onClick={() => setShowModal(true)}
-                                            className="text-center px-4 col-span-1 py-2 text-white rounded-full cursor-pointer bg-fantsy-blue-400 hover:bg-fantsy-blue-500">
+                                            className="text-center px-4 col-span-1 py-2 border-2 border-fantsy-blue-400 text-white rounded-lg cursor-pointer bg-fantsy-blue-400 hover:bg-fantsy-blue-500 hover:border-fantsy-blue-500">
                                             <p>Date vereinbaren</p>
                                         </div>
                                         :
-                                        <>
-                                            <div
-                                                className="px-4 py-2 col-span-2 text-fantsy-orange-600">
-                                                <p className="text-center sm:text-left">{profile.data.displayName} hat noch keine Preise!</p>
-                                            </div>
-                                        </>
+                                        <div
+                                            className="px-4 py-2 col-span-2 text-shade-600 bg-shade-100 rounded-lg">
+                                            <p className="text-center">{profile.data.displayName} hat noch keine Preise!</p>
+                                        </div>
                                     }
+
+                                    {profile?.data?.follows.includes(user.uid) || isFollowing ? (
+                                        <div className="rounded-lg cursor-pointer bg-shade-100 hover:bg-shade-200 text-shade-500 px-4 py-2 text-center flex items-center justify-center w-max" onClick={() => handleUnfollow(user.uid)}><BsHeart size={20} /></div>
+                                    ) : (
+                                        <div className="rounded-lg cursor-pointer bg-fantsy-green-400 border-fantsy-green-300 hover:bg-fantsy-green-500 text-white px-4 py-2 text-center flex items-center justify-center w-max" onClick={() => handleFollow(user.uid)}><BsFillHeartFill size={20} /></div>
+                                    )}
+
                                 </div> :
                                 <div className="sm:-mt-24 mx-auto gap-4 justify-center hidden sm:block">
-                                    {profile.id === user.uid ?                                        
+                                    {profile.id === user.uid ?
                                         <button className="py-2 px-4 rounded-lg flex items-center bg-white hover:bg-fantsy-blue-300 my-2" onClick={goToAccount}>
                                             <AiFillEdit className="mr-2 text-shade-500" size={20} />
                                             <p>Profil bearbeiten</p>
@@ -487,7 +636,7 @@ const UserProfileMain = ({ profile }) => {
                                     </li>
                                     <li className="flex my-4">
                                         <BiWorld size={20} className="mr-4" />
-                                        <p className="-mt-1">Polen (Osteuropäisch)</p>
+                                        <p className="-mt-1">{profile.data?.userOrigin} ({profile.data?.userBodyType})</p>
                                     </li>
                                     <li className="flex my-4">
                                         <BsChatDots size={20} className="mr-4" />

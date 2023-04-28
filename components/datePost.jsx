@@ -3,6 +3,7 @@ import Image from 'next/image'
 import React, { useEffect, useState } from 'react'
 import { AiFillStar } from 'react-icons/ai'
 import { fireDb } from '../firebaseClient';
+import Link from "next/link"
 
 const DatePost = ({ profile, date }) => {
 
@@ -30,6 +31,7 @@ const DatePost = ({ profile, date }) => {
                                 className="rounded-full aspect-square"
                                 alt="Worker Image"
                             />
+                            {/* <Link href={`/profile/${profile.id}`}><p>{date?.daters[0]}</p></Link> */}
                             <p>{date?.daters[0]}</p>
                             <div class="flex items-center">
                                 {date?.initiatorRating === 0 ?

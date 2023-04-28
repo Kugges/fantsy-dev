@@ -7,6 +7,7 @@ import { AiFillStar } from "react-icons/ai";
 import { toast } from "react-toastify"
 import { useForm } from 'react-hook-form'
 import { BsFillCheckCircleFill } from 'react-icons/bs';
+import Link from 'next/link';
 
 const styles = {
 
@@ -37,6 +38,19 @@ const DateToRate = ({ profile, date }) => {
         month: 'long',
         day: 'numeric'
     });
+
+
+    const profilePrice = profile?.data?.workerPrices;
+    const keysOrder = [
+        "01_15 min",
+        "02_30 min",
+        "03_1 Std",
+        "04_2 Std",
+        "05_3 Std",
+        "06_4 Std",
+        "07_8 Std",
+        "08_12 Std"
+    ];
 
 
 
@@ -134,7 +148,7 @@ const DateToRate = ({ profile, date }) => {
         if (date.initiatorDate === user.email) {
             // DATE REQUEST OF USER
             return (
-                <div className="py-10 border-b border-shade-100">
+                <div className="py-10 border-shade-100">
                     <h2 className="font-bold mb-2 text-fantsy-orange-500">Ausstehende Date-Anfrage</h2>
                     <div className="w-full rounded-lg border-2 border-fantsy-orange-300">
 
@@ -151,7 +165,21 @@ const DateToRate = ({ profile, date }) => {
 
                             </div>
                             <div className="p-2 flex items-center gap-4">
+
                                 <p><span className="text-shade-500">Dauer:</span> {date?.datingLength}</p>
+                                {/* {keysOrder.map(key => {
+                                    if (profilePrice[key] !== '') {
+                                        // Remove the prefix before displaying the key
+                                        const displayedKey = key.substring(3); // Assumes the prefix is always 3 characters
+                                        return (
+                                            <p className="col-span-2" key={key}>
+                                                {displayedKey}: <span className="font-bold">{profilePrice[key]} €</span>
+                                            </p>
+                                        );
+                                    } else {
+                                        return null;
+                                    }
+                                })} */}
                                 <p><span className="text-shade-500">Datum:</span> {dateDate}</p>
                                 <p><span className="text-shade-500">Uhrzeit:</span> {date?.datingTime}</p>
                             </div>
@@ -171,7 +199,7 @@ const DateToRate = ({ profile, date }) => {
         } else {
             // DATE REQUEST OF OTHER USER
             return (
-                <div className="py-10 border-b border-shade-100">
+                <div className="py-10 border-shade-100">
                     <h2 className="font-bold mb-2 text-fantsy-blue-500">Neue Date-Anfrage</h2>
                     <div className="w-full rounded-lg border-2 border-fantsy-blue-500">
                         <div className="flex flex-col gap-2 p-2">
@@ -209,7 +237,7 @@ const DateToRate = ({ profile, date }) => {
         // SHOW ACTIVE DATE
         return (
             <>
-                <div className="py-10 border-b border-shade-100">
+                <div className="py-10 border-shade-100">
                     <div className="p-2 flex items-center gap-4">
                         <p><span className="text-shade-500">Dauer:</span> {date?.datingLength}</p>
                         <p><span className="text-shade-500">Datum:</span> {dateDate}</p>
@@ -220,19 +248,27 @@ const DateToRate = ({ profile, date }) => {
                             <BsFillCheckCircleFill size={20} className="text-fantsy-green-500" />
                         }
                     </div>
-                    <div className="flex flex-col gap-2 p-2">
+                    <div className="flex flex-col gap-2 p-2 bg-shade-50 rounded-lg">
                         <div className="flex items-center gap-2">
                             <Image
                                 src={date?.userAvatars[0]}
-                                width={30}
-                                height={30}
-                                className="rounded-full aspect-square"
+                                width={40}
+                                height={40}
+                                className="rounded-full aspect-square border-white border-2"
                                 alt="Worker Image"
                             />
-                            <p className="font-bold">{date?.daters[0]}</p>
+                            <p className="font-semibold text-xl">Date-Anfrage von {date?.daters[0]} an {date?.daters[1]}</p>
+                            <Image
+                                src={date?.userAvatars[1]}
+                                width={40}
+                                height={40}
+                                className="rounded-full aspect-square border-white border-2"
+                                alt="Worker Image"
+                            />
                         </div>
-                        <div className="w-full text-shade-500">
-                            <p>
+                        <div className="w-full">
+                            <Link href={`/profile/${otherProfile.id}`}><p className="hover:underline">{date?.daters[0]}</p></Link>
+                            <p className="text-shade-500">
                                 {date?.dateRequestText}
                             </p>
                         </div>
@@ -267,21 +303,21 @@ const DateToRate = ({ profile, date }) => {
                                         </div>
                                         :
                                         <div className="flex items-center">
-                                        {date.initiatorRating === 0 ?
-                                            <>
-                                                <AiFillStar
-                                                    size={20}
-                                                    className="text-shade-500" />
-                                                <p className="text-shade-500">Keine Bewertung</p>
-                                            </>
-                                            :
-                                            <>
-                                                <AiFillStar
-                                                    size={20}
-                                                    className="text-fantsy-orange-500" />
-                                                <p>{date?.initiatorRating}/5</p>
-                                            </>
-                                        }
+                                            {date.initiatorRating === 0 ?
+                                                <>
+                                                    <AiFillStar
+                                                        size={20}
+                                                        className="text-shade-500" />
+                                                    <p className="text-shade-500">Keine Bewertung</p>
+                                                </>
+                                                :
+                                                <>
+                                                    <AiFillStar
+                                                        size={20}
+                                                        className="text-fantsy-orange-500" />
+                                                    <p>{date?.initiatorRating}/5</p>
+                                                </>
+                                            }
                                         </div>
                                     }
                                 </div>

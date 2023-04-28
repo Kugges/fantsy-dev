@@ -206,9 +206,9 @@ export default function Chat() {
                 </div>
                 <div className="flex fixed gap-2 right-12 sm:right-80 top-3 sm:top-4 z-20">
                     {/* <BsChatDots size={35} onClick={() => startChat()} className={styles.sidebarBtn} /> */}
-                    <BsChatDots size={32} onClick={toggleSidebar} className="text-black sm:hidden cursor-pointer active:bg-fantsy-orange-600 hover:bg-fantsy-orange-600 p-1 rounded-full" />
+                    <BsChatDots size={32} onClick={toggleSidebar} className="text-black sm:hidden cursor-pointer active:bg-fantsy-orange-600 hover:bg-fantsy-orange-600 p-1 mr-4 rounded-full" />
                 </div>
-                <div className={!sidebar ? "fixed top-20 right-[-100%] h-screen w-60 z-10 ease-in duration-300" : "fixed top-16 right-0 h-screen w-60 z-10 ease-in duration-300"}>
+                <div className={!sidebar ? "fixed sm:top-20 right-[-100%] h-screen w-60 z-10 ease-in duration-300" : "fixed sm:top-16 right-0 h-screen w-60 z-10 ease-in duration-300"}>
                     <ul className="bg-white w-full h-full shadow-lg overflow-hidden overflow-y-scroll scrollbar-hide">
                         {chats?.filter(chat => chat.users.includes(user.email))
                             .map(chat => {

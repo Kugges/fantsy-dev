@@ -49,6 +49,11 @@ a {
   z-index: 100 !important;
 }
 
+/* .fantsyCheck:checked + label {  
+  background-color: #1a202c;
+  color: #f6e05e;
+} */
+
 /* @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
